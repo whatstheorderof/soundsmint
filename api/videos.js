@@ -83,7 +83,7 @@ async function fromTab(tab) {
   if (!data) return [];
   const out = [];
   collect(data, out, new Set());
-  return out;
+  return out.map((v) => ({ ...v, tab, short: v.short || tab === "shorts" }));
 }
 
 module.exports = async function handler(req, res) {
@@ -102,7 +102,7 @@ module.exports = async function handler(req, res) {
     if (!v.id || seen.has(v.id)) continue;
     seen.add(v.id);
     const r = rssById.get(v.id) || {};
-    merged.push({ id: v.id, title: v.title || r.title || "", published: r.published, ago: v.ago, views: r.views, short: !!v.short });
+    merged.push({ id: v.id, title: v.title || r.title || "", published: r.published, ago: v.ago, views: r.views, short: !!v.short, tab: v.tab || "rss" });
   }
   // Order: known dates newest-first, then the rest in channel order.
   const dated = merged.filter((v) => v.published).sort((a, b) => b.published.localeCompare(a.published));

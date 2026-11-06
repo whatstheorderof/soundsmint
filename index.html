@@ -153,6 +153,19 @@ body:not(.is-home) .nav a .k{display:none}
 .vitem > span:last-child{padding:0 12px;display:block;min-width:0}
 .vitem .thumb::after{content:"▶";position:absolute;right:8px;bottom:8px;width:34px;height:34px;border-radius:50%;background:var(--ink);color:var(--mint);display:grid;place-items:center;font-size:13px;opacity:.9}
 .vcount{color:var(--muted)}
+.vjump{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+.vjump .chip b{font-weight:500;color:var(--mint);margin-left:6px}
+.vjump .chip:hover b{color:inherit}
+.vsec{padding-top:28px;scroll-margin-top:16px}
+.vsec-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 16px;border-bottom:2px solid var(--line);padding-bottom:10px;margin-bottom:16px}
+.vsec-head h2{font-size:clamp(40px,5vw,60px)}
+.vsec-head h2 small{font-family:var(--mono);font-size:12px;color:var(--mint);letter-spacing:.06em;margin-left:10px;vertical-align:middle}
+.vsec-head p{margin:0;color:var(--muted);font-size:14px;max-width:52ch}
+.vsec-head a{color:var(--mint);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+.vempty{color:var(--muted);margin:0;padding:18px;border:2px dashed var(--line)}
+.vlist.shorts{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.vlist.shorts .thumb{aspect-ratio:9/16}
+.vlist.shorts .vitem strong{font-size:21px}
 .vitem[aria-pressed="true"]{border-color:var(--mint)}
 .vitem:hover{border-color:var(--line)}
 .thumb{aspect-ratio:16/9;background:conic-gradient(var(--ink) 25%,var(--mint-deep) 0 50%,var(--ink) 0 75%,var(--mint-deep) 0) 0 0/16px 16px;position:relative;overflow:hidden}
@@ -389,7 +402,8 @@ footer img{width:220px;max-width:100%;height:auto;opacity:.9}
       </div>
       <div>
         <p class="mono vcount" id="vcount" style="margin:0 0 12px"></p>
-        <div class="vlist" id="vlist" role="group" aria-label="Videos"></div>
+        <div class="vjump" id="vjump" role="group" aria-label="Jump to a section"></div>
+        <div id="vsections"></div>
       </div>
     </div>
   </section>
@@ -559,14 +573,14 @@ const RELEASES = [
 const CHANNEL_ID = "UCh_z_mVjnIPXXibchl09-Sg";
 const UPLOADS = "UU" + CHANNEL_ID.slice(2);
 let VIDEOS = [
-  { id:"3t9VLhn3394", title:"Where’s Wally?", year:"2025", kind:"Music video" },
-  { id:"UqRnWqLDp40", title:"Tin", year:"2025", kind:"Music video" },
-  { id:"DfMGN1KwQFM", title:"Zombies", year:"2025", kind:"Music video" },
-  { id:"DkAYe07M-F8", title:"Incel Saviour (feat. STONE)", year:"2024", kind:"Music video" },
-  { id:"YQmpMTJ2Geg", title:"Here’s The Tea", year:"2024", kind:"Video" },
-  { id:"qXx3ICXrtds", title:"Pugland", year:"2023", kind:"Video" },
-  { id:"1CKLLP6B5WY", title:"Live at Sebright Arms, 26/01/23", year:"2023", kind:"Live" },
-  { id:"tERl6mYVHsc", title:"Fall Back", year:"2022", kind:"Video" }
+  { id:"3t9VLhn3394", title:"Where’s Wally?", year:"2025", kind:"Music video", cat:"music" },
+  { id:"UqRnWqLDp40", title:"Tin", year:"2025", kind:"Music video", cat:"music" },
+  { id:"DfMGN1KwQFM", title:"Zombies", year:"2025", kind:"Music video", cat:"music" },
+  { id:"DkAYe07M-F8", title:"Incel Saviour (feat. STONE)", year:"2024", kind:"Music video", cat:"music" },
+  { id:"YQmpMTJ2Geg", title:"Here’s The Tea", year:"2024", kind:"Video", cat:"music" },
+  { id:"qXx3ICXrtds", title:"Pugland", year:"2023", kind:"Video", cat:"music" },
+  { id:"1CKLLP6B5WY", title:"Live at Sebright Arms, 26/01/23", year:"2023", kind:"Live", cat:"live" },
+  { id:"tERl6mYVHsc", title:"Fall Back", year:"2022", kind:"Video", cat:"music" }
 ];
 /* Notes shown under the player, matched by video id or by song title */
 const VNOTES = {
@@ -579,7 +593,7 @@ const VNOTES = {
 };
 const TITLE_NOTES = { "gillett square":"From Milk It, the mixtape, released 18 March 2026.", "herpes":"The 2025 single.", "pugland":"Produced by Amin El Makkawi and Tommy Wallwork." };
 const normTitle = t => t.toLowerCase().replace(/[’']/g,"'").replace(/\s+/g," ").trim();
-/* "sounds mint - Tin (Official Music Video)" -> { title:"Tin", kind:"Music video" } */
+/* "sounds mint - Tin (Official Music Video)" -> { title:"Tin", kind:"Music video", cat:"music" } */
 function cleanTitle(raw){
   let t = raw.replace(/^\s*sounds\s*mint\s*[-–—:|]\s*/i,"");
   let kind = /official\s+(music\s+)?video/i.test(t) ? "Music video" : /visuali[sz]er/i.test(t) ? "Visualiser" : /lyric/i.test(t) ? "Lyric video" : /live|session|@/i.test(raw) ? "Live" : /#shorts|short/i.test(raw) ? "Short" : "Video";
@@ -587,11 +601,25 @@ function cleanTitle(raw){
   t = t.replace(/^sounds mint\s*@\s*/i,"Live at ");
   return { title: t || raw, kind };
 }
+/* Watch page sections, decided from the video title (and the channel tab it came from) */
+const VCATS = [
+  { key:"music",  label:"Music videos", blurb:"Official videos, visualisers and lyric videos.", empty:"new music videos", link:"https://www.youtube.com/@sounds_mint/videos" },
+  { key:"shorts", label:"Shorts",       blurb:"Quick vertical clips from the channel.", empty:"new Shorts",          link:"https://www.youtube.com/@sounds_mint/shorts" },
+  { key:"live",   label:"Live",         blurb:"Gigs, sessions and live sets.", empty:"new live videos",                     link:"https://www.youtube.com/@sounds_mint/streams" },
+  { key:"bts",    label:"BTS & studio", blurb:"Behind the scenes, in the studio and on the road.", empty:"behind-the-scenes and studio videos",  link:"https://www.youtube.com/@sounds_mint/videos" }
+];
+function categorise(raw, src={}){
+  if (src.short || /#shorts?\b/i.test(raw)) return "shorts";
+  if (/behind the scenes|\bbts\b|making of|in the studio|studio (diary|vlog|session)|recording|rehears|vlog|diary|interview|q\s*&\s*a|documentary|on the road|tour (diary|vlog)/i.test(raw)) return "bts";
+  if (src.tab==="streams" || /\blive\b|\bsession\b|\s@\s|^\s*sounds\s*mint\s*@|\bgig\b|festival|\bset\b/i.test(raw)) return "live";
+  if (/\bstudio\b/i.test(raw)) return "bts";
+  return "music";
+}
 function noteFor(v){
   if (VNOTES[v.id]) return VNOTES[v.id];
   const n = normTitle(v.title);
   for (const k in TITLE_NOTES) if (n.includes(k)) return TITLE_NOTES[k];
-  return v.kind==="Live" ? "Live footage from the sounds mint channel." : "From the sounds mint YouTube channel.";
+  return v.cat==="live" ? "Live footage from the sounds mint channel." : v.cat==="bts" ? "Behind the scenes with sounds mint." : v.cat==="shorts" ? "A short from the sounds mint channel." : "From the sounds mint YouTube channel.";
 }
 const PRESS = [
   { outlet:"Metal Magazine", date:"23 Jul 2025", by:"David Alarcón", url:"https://metalmagazine.eu/en/post/sounds-mint",
@@ -780,18 +808,33 @@ function showVideo(v, autoplay){
     return;
   }
   const thumb = v.id!=="__all" ? `<img src="${ytThumb(v.id,"maxresdefault")}" alt="" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='${ytThumb(v.id,"hqdefault")}'}else{this.remove()}">` : "";
-  s.innerHTML = `<div class="poster">${thumb}<p class="mono eyebrow">${esc(v.year||"")}${v.year?" · ":""}${esc(v.kind||"Video")}</p><h2>${esc(v.title)}</h2>
+  s.innerHTML = `<div class="poster">${thumb}<p class="mono eyebrow">${esc(v.year||"")}${v.year?" · ":""}${esc(v.cat==="shorts"?"Short":(v.kind||"Video"))}</p><h2>${esc(v.title)}</h2>
     <div class="row" style="margin-top:14px">${EMBEDS?`<button class="btn" id="vplay">▶ Play</button>`:`<a class="btn" href="${ext}" target="_blank" rel="noopener">▶ Watch on YouTube</a>`}</div></div>`;
   const pb = $("#vplay"); if (pb) pb.addEventListener("click", ()=>showVideo(v,true));
 }
+function vcard(v){
+  const isShort = v.cat==="shorts";
+  const img = isShort
+    ? `<img src="${ytThumb(v.id,"oardefault")}" alt="" loading="lazy" decoding="async" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='${ytThumb(v.id,"hqdefault")}'}else{this.remove()}">`
+    : `<img src="${ytThumb(v.id,"hqdefault")}" alt="" loading="lazy" decoding="async" onerror="this.remove()">`;
+  return `<button class="vitem" data-id="${esc(v.id)}" aria-pressed="false" title="${esc(v.raw||v.title)}">
+      <span class="thumb">${img}</span>
+      <span><strong>${esc(v.title)}</strong><span class="mono">${esc(isShort?"Short":(v.kind||"Video"))}${v.year?" · "+esc(v.year):""}</span></span></button>`;
+}
 function renderVideos(){
-  const l = $("#vlist");
-  l.innerHTML = VIDEOS.map(v=>`<button class="vitem" data-id="${esc(v.id)}" aria-pressed="false" title="${esc(v.raw||v.title)}">
-      <span class="thumb"><img src="${ytThumb(v.id,"hqdefault")}" alt="" loading="lazy" decoding="async" onerror="this.remove()"></span>
-      <span><strong>${esc(v.title)}</strong><span class="mono">${esc(v.kind||"Video")}${v.year?" · "+esc(v.year):""}</span></span></button>`).join("");
-  l.querySelectorAll(".vitem").forEach(b=>b.addEventListener("click",()=>{ showVideo(VIDEOS.find(v=>v.id===b.dataset.id), true); $("#screen").scrollIntoView({behavior:"smooth",block:"start"}); }));
-  $("#vcount").textContent = `${VIDEOS.length} video${VIDEOS.length===1?"":"s"}`;
-  if (!currentVideo || !VIDEOS.some(v=>v.id===currentVideo.id)) showVideo(VIDEOS[0], false);
+  VIDEOS.forEach(v=>{ if(!v.cat) v.cat = categorise(v.raw||v.title, v); });
+  const groups = VCATS.map(c=>({ ...c, items: VIDEOS.filter(v=>v.cat===c.key) }));
+  $("#vjump").innerHTML = groups.map(g=>`<button class="chip" data-jump="${g.key}" aria-pressed="false"${g.items.length?"":" disabled style=\"opacity:.45;cursor:default\""}>${esc(g.label)}<b>${g.items.length}</b></button>`).join("");
+  $("#vsections").innerHTML = groups.map(g=>`<section class="vsec" id="vsec-${g.key}" aria-labelledby="vsec-h-${g.key}">
+      <div class="vsec-head"><div><h2 id="vsec-h-${g.key}">${esc(g.label)}<small>${g.items.length}</small></h2><p>${esc(g.blurb)}</p></div><a href="${g.link}" target="_blank" rel="noopener">On YouTube ↗</a></div>
+      ${g.items.length ? `<div class="vlist ${g.key==="shorts"?"shorts":""}" role="group" aria-label="${esc(g.label)}">${g.items.map(vcard).join("")}</div>`
+        : `<p class="vempty">Nothing here yet. When ${esc(g.empty)} go up on YouTube, they’ll show here automatically.</p>`}
+    </section>`).join("");
+  $("#vsections").querySelectorAll(".vitem").forEach(b=>b.addEventListener("click",()=>{ showVideo(VIDEOS.find(v=>v.id===b.dataset.id), true); $("#screen").scrollIntoView({behavior:"smooth",block:"start"}); }));
+  $("#vjump").querySelectorAll("[data-jump]").forEach(b=>b.addEventListener("click",()=>{ if(!b.disabled) document.getElementById("vsec-"+b.dataset.jump).scrollIntoView({behavior:"smooth",block:"start"}); }));
+  $("#vcount").textContent = `${VIDEOS.length} video${VIDEOS.length===1?"":"s"} on the channel`;
+  const first = groups.find(g=>g.key==="music"&&g.items.length)?.items[0] || VIDEOS[0];
+  if (!currentVideo || !VIDEOS.some(v=>v.id===currentVideo.id)) showVideo(first, false);
   else document.querySelectorAll(".vitem").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.id===currentVideo.id)));
 }
 $("#play-all").addEventListener("click", ()=>{
@@ -809,7 +852,7 @@ async function loadChannel(){
     VIDEOS = data.videos.map(x=>{
       const c = cleanTitle(x.title||"");
       const year = x.published ? String(new Date(x.published).getFullYear()) : (x.ago||"");
-      return { id:x.id, title:c.title, raw:x.title, kind:c.kind, year };
+      return { id:x.id, title:c.title, raw:x.title, kind:c.kind, year, cat: categorise(x.title||"", x) };
     });
     renderVideos();
   } catch(e){ /* stay on the fallback list */ }
