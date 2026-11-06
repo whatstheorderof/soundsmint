@@ -358,7 +358,7 @@ footer img{width:220px;max-width:100%;height:auto;opacity:.9}
       </div>
     </div>
     <div class="rel-grid" id="rel-grid"></div>
-    <p class="mono" style="color:var(--muted);margin-top:28px">Also on <a href="https://tidal.com/search?q=sounds%20mint" target="_blank" rel="noopener" style="color:var(--mint)">Tidal</a> and every other streaming service. First single “Fallback” came out in 2022.</p>
+    <p class="mono" style="color:var(--muted);margin-top:28px">Also on <a href="https://tidal.com/search?q=sounds%20mint" target="_blank" rel="noopener" style="color:var(--mint)">Tidal</a> and every other streaming service. First single “Fall Back” came out in May 2022.</p>
   </section>
 
   <!-- WATCH -->
@@ -495,44 +495,56 @@ footer img{width:220px;max-width:100%;height:auto;opacity:.9}
 /* ---------------- DATA ---------------- */
 const ARTIST_SP = "5hx1tP4Egp1xNgI1c5cLcK";
 const RELEASES = [
-  { id:"milk-it", title:"Milk It", kind:"Mixtape", group:"long", date:"18 Mar 2026", label:"Uncharted",
-    apple:["milk-it","1879836313"], sp:null, art:"ab67616d0000b273a55d7edc03b09de3ecb82636",
-    note:"Seven-track mixtape, out on Uncharted. Includes “Gillett Square” and “Let Me In Master, It’s Cold”.",
+  { id:"milk-it", art:"Music221/v4/26/70/22/267022de-4c82-155f-28ff-6c91caf0baa6/199806200254.jpg", title:"Milk It", kind:"Mixtape", group:"long", date:"18 Mar 2026", label:"Unchrtd / EQT Recordings",
+    apple:["milk-it","1879836313"], sp:null,
+    note:"Seven-track mixtape. Includes “Gillett Square” and “Let Me In Master, It’s Cold”.",
     tracks:["Ooo Yeh","Gillett Square","Como E Que E","Let Me In Master, It’s Cold"], tracksPartial:true,
     c1:"#93e2c2", c2:"#111413", pat:"repeating-linear-gradient(90deg,transparent 0 18px,rgba(17,20,19,.12) 18px 20px)" },
-  { id:"white-lines", title:"White Lines", kind:"Single", group:"single", date:"18 Feb 2026", label:"Uncharted",
+  { id:"white-lines", art:"Music221/v4/6d/b1/d8/6db1d892-d496-0446-20d9-9161c46ec93b/820200150240.jpg", title:"White Lines", kind:"Single", group:"single", date:"18 Feb 2026", label:"Unchrtd / EQT Recordings",
     apple:["white-lines-single","1872862931"], sp:null, c1:"#e9ece7", c2:"#111413",
     pat:"repeating-linear-gradient(0deg,transparent 0 22px,#111413 22px 26px)" },
-  { id:"citys-gone", title:"City’s Gone To Sleep", kind:"Single", group:"single", date:"20 Jan 2026", label:"Uncharted",
+  { id:"citys-gone", art:"Music221/v4/4b/0b/4e/4b0b4e6f-2045-35a9-e5c6-0fd0cd95f1b6/199806690116.jpg", title:"City’s Gone To Sleep", kind:"Single", group:"single", date:"20 Jan 2026", label:"Unchrtd / EQT Recordings",
     apple:["citys-gone-to-sleep-single","1859846400"], sp:null, c1:"#1d2a33", c2:"#e9ece7",
     pat:"radial-gradient(circle at 70% 30%,#e9ece7 0 8%,transparent 8.5%), radial-gradient(#ffffff22 1px,transparent 1.5px) 0 0/14px 14px" },
-  { id:"herpes", title:"Herpes", kind:"Single", group:"single", date:"2025", label:"EQT Recordings",
+  { id:"herpes", art:"Music211/v4/b5/30/83/b5308305-a5aa-dda8-394b-c776de5efa5f/199806050873.jpg", title:"Herpes", kind:"Single", group:"single", date:"5 Nov 2025", label:"EQT Recordings",
     apple:["herpes-single","1844471961"], sp:null, c1:"#c94a3a", c2:"#111413",
     pat:"radial-gradient(#111413 2px,transparent 2.5px) 0 0/12px 12px" },
-  { id:"one-day", title:"One Day We’ll Make It Out Of Here, ’Til Then;", short:"One Day…", kind:"EP", group:"long", date:"4 Jul 2025", label:"EQT Recordings",
-    apple:["one-day-well-make-it-out-of-here-til-then","1825481643"], sp:["album","695xzJK1fPEH7SIFVlFsCY"], art:"ab67616d0000b273274d38685fc9fedd1e5b7daf",
+  { id:"one-day", art:"Music221/v4/3d/bd/49/3dbd4958-bd13-4396-4467-dd483a148280/199538163988.jpg", title:"One Day We’ll Make It Out Of Here, ’Til Then;", short:"One Day…", kind:"EP", group:"long", date:"4 Jul 2025", label:"EQT Recordings",
+    apple:["one-day-well-make-it-out-of-here-til-then","1825481643"], sp:["album","695xzJK1fPEH7SIFVlFsCY"],
     note:"The second EP. A snapshot of modern Britain: isolation, class and a government that isn’t listening. Opens with “1984”, closes with “Zombies”, and features STONE.",
     tracks:["1984","Where’s Wally?","Sick Note","Spy Kids","Tin","Incel Saviour (feat. STONE)","Zombies"], unordered:true,
     c1:"#111413", c2:"#93e2c2", fs:"1.25em",
     pat:"conic-gradient(#111413 25%,#1f2a26 0 50%,#111413 0 75%,#1f2a26 0) 0 0/24px 24px" },
-  { id:"tin", title:"Tin", kind:"Single", group:"single", date:"27 May 2025", label:"EQT Recordings",
+  { id:"tin", art:"Music221/v4/bd/14/68/bd1468ec-cc82-27a6-644b-238849fe280b/199350532139.jpg", title:"Tin", kind:"Single", group:"single", date:"27 May 2025", label:"EQT Recordings",
     apple:["tin-single","1812457889"], sp:["track","6WP6C3Rw4HjOBPve8i9uWo"], video:"UqRnWqLDp40",
     note:"Dub-leaning bassline sparked by The Clash; drums built on Rudy’s MPC.",
     c1:"#b9c0bc", c2:"#111413", pat:"repeating-linear-gradient(45deg,transparent 0 10px,rgba(17,20,19,.18) 10px 12px)" },
-  { id:"zombies", title:"Zombies", kind:"Single", group:"single", date:"May 2025", label:"EQT Recordings",
+  { id:"zombies", art:"Music211/v4/3f/45/7d/3f457d62-09ff-a09d-737d-4238525c045d/199350134395.jpg", title:"Zombies", kind:"Single", group:"single", date:"22 Apr 2025", label:"EQT Recordings",
     apple:["zombies-single","1804661951"], sp:["track","3gpW3GpvFgOJSJBDlSXDUl"], video:"DfMGN1KwQFM",
     note:"Produced by Slim Typical. A haunting story told through the eyes of the disillusioned.",
     c1:"#3c5a3f", c2:"#e9ece7", pat:"linear-gradient(#ffffff18 2px,transparent 2px) 0 0/100% 20%, linear-gradient(90deg,#ffffff18 2px,transparent 2px) 50% 0/50% 100%" },
-  { id:"incel", title:"Incel Saviour", feat:"feat. STONE", kind:"Single", group:"single", date:"14 Oct 2024", label:"EQT Recordings",
+  { id:"incel", art:"Music211/v4/08/7d/9a/087d9a53-b697-c4d7-ff83-db4a51c1c7a9/198846400815.jpg", title:"Incel Saviour", feat:"feat. STONE", kind:"Single", group:"single", date:"14 Oct 2024", label:"EQT Recordings",
     apple:["incel-saviour-feat-stone-single","1770539321"], sp:["track","4XGVb4uBU6IqieUfgueBG8"], video:"DkAYe07M-F8",
     note:"Written late one night by Kelvin and Layla, shelved for six months, then revived when STONE’s Fin heard it in the studio.",
     c1:"#e7d84a", c2:"#111413", pat:"repeating-linear-gradient(-45deg,transparent 0 14px,#111413 14px 18px)" },
-  { id:"club-penguin", title:"Club Penguin", kind:"EP", group:"long", date:"14 Mar 2024", label:"",
-    apple:["club-penguin-ep","1732281595"], sp:null, art:"ab67616d0000b273c0ffc7f3fc45df91a457b88d",
+  { id:"club-penguin", art:"Music112/v4/21/9a/53/219a53f0-7373-2e53-7fbc-4c464cc9fbbe/5063413932516_cover.jpg", title:"Club Penguin", kind:"EP", group:"long", date:"13 Mar 2024", label:"Fresh Mint Records",
+    apple:["club-penguin-ep","1732281595"], sp:null,
     note:"Debut EP, made as DIY as it gets, mostly mixed on an iPhone and earphones. Title track features Connie Constance.",
     c1:"#cfe8f2", c2:"#111413", pat:"radial-gradient(circle at 30% 70%,#111413 0 14%,transparent 14.5%), radial-gradient(circle at 30% 70%,#e9ece7 0 20%,transparent 20.5%)" },
-  { id:"heres-the-tea", title:"Here’s The Tea", kind:"Single", group:"single", date:"19 Jan 2024", label:"Fresh Mint Records",
-    apple:null, sp:null, c1:"#7a5a3a", c2:"#e9ece7", pat:"radial-gradient(circle at 50% 50%,transparent 0 30%,#ffffff22 30% 32%,transparent 32% 40%,#ffffff22 40% 42%,transparent 42%)" }
+  { id:"heres-the-tea", art:"Music126/v4/4f/10/67/4f1067ee-de83-acf3-4fd2-5474eb9cb3c0/5063413422444_cover.jpg", title:"Here’s The Tea", kind:"Single", group:"single", date:"19 Jan 2024", label:"Fresh Mint Records",
+    apple:["heres-the-tea-single","1721184891"], note:"Three-track single.", sp:null, c1:"#7a5a3a", c2:"#e9ece7", pat:"radial-gradient(circle at 50% 50%,transparent 0 30%,#ffffff22 30% 32%,transparent 32% 40%,#ffffff22 40% 42%,transparent 42%)" },
+  { id:"club-penguin-single", art:"Music126/v4/fe/0a/bd/fe0abd94-b5c9-0daa-7b58-a6414d57f39c/5063413055321_cover.jpg", title:"Club Penguin", kind:"Single", group:"single", date:"16 Nov 2023", label:"",
+    apple:["club-penguin-single","1712948150"], sp:null, note:"Two-track single ahead of the EP.", c1:"#cfe8f2", c2:"#111413" },
+  { id:"whats-good", art:"Music126/v4/90/e1/ff/90e1ff6b-e535-bac8-6213-ea3ab4d25276/5063346709841_cover.jpg", title:"What’s Good (In the Hood)", kind:"Single", group:"single", date:"22 Sep 2023", label:"",
+    apple:["whats-good-in-the-hood-single","1705443549"], sp:null, c1:"#e9ece7", c2:"#111413" },
+  { id:"mess", art:"Music126/v4/e7/37/12/e7371251-8a05-2828-06b2-9915673b97a4/197188271329.jpg", title:"Mess", kind:"Single", group:"single", date:"3 Apr 2023", label:"",
+    apple:["mess-single","1675125182"], sp:null, c1:"#232926", c2:"#93e2c2" },
+  { id:"pugland", art:"Music112/v4/81/a6/bf/81a6bf09-d97a-43f4-0f29-ef90900b892e/197187646036.jpg", title:"Pugland", kind:"Single", group:"single", date:"16 Jan 2023", label:"",
+    apple:["pugland-single","1659930085"], sp:null, note:"Produced by Amin El Makkawi and Tommy Wallwork.", c1:"#93e2c2", c2:"#111413" },
+  { id:"fish-chips", art:"Music112/v4/2e/2c/ee/2e2ceecf-5128-c784-5aca-cef9678e2a0b/5056494916001_1.jpg", title:"Fish & Chips", kind:"Single", group:"single", date:"15 Aug 2022", label:"",
+    apple:["fish-chips-single","1631874771"], sp:null, c1:"#e7d84a", c2:"#111413" },
+  { id:"fall-back", art:"Music122/v4/a7/2b/ee/a72beef5-6f03-c78b-1e18-eeb252f6fa26/5056495124467_1.jpg", title:"Fall Back", kind:"Single", group:"single", date:"22 May 2022", label:"",
+    apple:["fall-back-single","1620946597"], sp:null, note:"The first sounds mint release.", c1:"#111413", c2:"#e9ece7" }
 ];
 const VIDEOS = [
   { id:"3t9VLhn3394", title:"Where’s Wally?", year:"2025", rel:"one-day",
@@ -604,8 +616,8 @@ const MEMBERS = [
 ];
 const TIMELINE = [
   ["2021","Kelvin and Rudy, out of their previous band, start writing again. Six demos become the first sounds mint songs."],
-  ["2022","Robbie and Layla join. First single “Fallback” and first show."],
-  ["2023","Three-month residency at the Sebright Arms. Shows with Blur, then support slots for Monster Florence and The Goa Express."],
+  ["2022","Robbie and Layla join. First single “Fall Back” in May, “Fish & Chips” in August, and the first show."],
+  ["2023","Singles “Pugland”, “Mess”, “What’s Good (In the Hood)” and “Club Penguin”. Three-month residency at the Sebright Arms. Shows with Blur, then support slots for Monster Florence and The Goa Express."],
   ["2024","“Here’s The Tea” in January, debut EP Club Penguin in March. “Incel Saviour” with STONE in October, then the STONE EU run. A Stones Throw and Hanwell Hootie festivals."],
   ["2025","“Zombies” and “Tin” via EQT Recordings, Spotify Fresh Finds, then the One Day We’ll Make It Out Of Here, ’Til Then; EP in July. “Herpes” later in the year."],
   ["2026","“City’s Gone To Sleep” and “White Lines”, then Milk It, the mixtape, on 18 March."]
@@ -634,7 +646,8 @@ const byId = id => RELEASES.find(r=>r.id===id);
 
 function coverHTML(r, opts={}){
   const t = r.short || r.title;
-  const art = (EMBEDS && r.art) ? `<img class="art" src="https://i.scdn.co/image/${r.art}" alt="" loading="lazy" onerror="this.remove()">` : "";
+  const size = opts.size || 600;
+  const art = r.art ? `<img class="art" src="https://is1-ssl.mzstatic.com/image/thumb/${r.art}/${size}x${size}bb.jpg" srcset="https://is1-ssl.mzstatic.com/image/thumb/${r.art}/${size*2}x${size*2}bb.jpg 2x" alt="${esc(r.title)} cover art" loading="lazy" decoding="async" onerror="this.remove()">` : "";
   return `<span class="cm">${esc(r.kind)} · ${esc(r.date.split(" ").pop())}</span>
     <span class="ct">${esc(t)}</span>
     <span class="cm">sounds mint</span>${art}${opts.badge?'<span class="play-badge" aria-hidden="true">▶</span>':''}`;
@@ -659,7 +672,7 @@ function setSvc(s){
 function play(id){
   const r = byId(id); if(!r) return;
   current = id;
-  paintCover($("#dock-cover"), r);
+  paintCover($("#dock-cover"), r, {size:120});
   $("#dock-title").textContent = r.title + (r.feat? " ("+r.feat+")":"");
   $("#dock-sub").textContent = `${r.kind} · ${r.date}`;
   document.querySelectorAll(".rel").forEach(el=>el.classList.toggle("playing", el.dataset.id===id));
@@ -821,7 +834,7 @@ document.addEventListener("click", e=>{
 
 /* init */
 paintCover(document.querySelector('[data-cover="milk-it"]'), byId("milk-it"));
-paintCover($("#dock-cover"), byId("milk-it"));
+paintCover($("#dock-cover"), byId("milk-it"), {size:120});
 document.querySelectorAll("[data-svc]").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.svc===svc)));
 renderReleases(); renderVideos(); renderPress(); renderAbout(); renderLive();
 route();
