@@ -1,0 +1,829 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sounds Mint</title>
+<meta name="description" content="sounds mint — London post-punk four-piece. Milk It, the mixtape, out now.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=League+Gothic&family=Archivo:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a 2009 band-site split — paper masthead with stacked condensed nav + duotone photo,
+   a mint/ink checker band, then a dark noticeboard of panels. One committed look (paper over ink). */
+:root{
+  --paper:#e9ece7;      /* off-white with a faint green bias */
+  --paper-2:#dfe3dd;
+  --ink:#111413;        /* near-black, green-leaning */
+  --board:#191d1b;      /* noticeboard background */
+  --panel:#232926;      /* panel fill */
+  --line:#343b38;
+  --mint:#93e2c2;       /* seafoam mint, from the bass guitars the band was named after */
+  --mint-deep:#2b7a5f;
+  --muted:#93a09a;
+  --muted-ink:#5b6560;
+  --display:"League Gothic","Oswald","Arial Narrow",Impact,sans-serif;
+  --body:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --gutter-l:max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r:max(16px, env(safe-area-inset-right, 0px));
+  --grain:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{background:var(--board);color:var(--paper)}
+body{font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;padding-bottom:96px}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--mint);outline-offset:3px}
+.wrap{max-width:1240px;margin:0 auto;padding-left:var(--gutter-l);padding-right:var(--gutter-r)}
+.mono{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:.92;text-transform:uppercase;letter-spacing:.01em;text-wrap:balance;margin:0}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+
+/* ---------- masthead (paper) ---------- */
+.mast{background:var(--paper);color:var(--ink);position:relative;overflow:hidden}
+.mast::after{content:"";position:absolute;inset:0;background:var(--grain);opacity:.18;pointer-events:none;mix-blend-mode:multiply}
+.mast-inner{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:24px;align-items:end;padding-block:36px 0;position:relative;z-index:1}
+.logo{display:block;width:min(100%,560px)}
+.logo img{width:100%;height:auto;display:block}
+.tag{margin:14px 0 26px;color:var(--muted-ink)}
+.nav{list-style:none;margin:0 0 36px;padding:0;display:flex;flex-direction:column;gap:2px}
+.nav a{font-family:var(--display);font-size:clamp(34px,4.4vw,52px);line-height:.95;text-transform:uppercase;text-decoration:none;color:var(--ink);display:inline-flex;align-items:baseline;gap:12px;transition:color .15s}
+.nav a .k{font-family:var(--mono);font-size:11px;color:var(--muted-ink);letter-spacing:.08em;transform:translateY(-6px)}
+.nav a:hover,.nav a[aria-current="page"]{color:var(--mint-deep)}
+.nav a[aria-current="page"]::before{content:"";width:14px;height:14px;background:var(--ink);align-self:center;margin-right:-2px}
+.photo{position:relative;align-self:end;justify-self:end;width:100%;max-width:640px}
+.duo{position:relative;aspect-ratio:1500/1359;max-width:100%;background:var(--mint)}
+.duo img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1) contrast(1.35) brightness(1.05);mix-blend-mode:multiply;transition:filter .5s, mix-blend-mode .5s}
+.duo:hover img{filter:none;mix-blend-mode:normal}
+.duo figcaption{position:absolute;right:10px;bottom:10px;background:var(--ink);color:var(--paper);padding:4px 8px}
+.stamp{position:absolute;left:-18px;top:18px;transform:rotate(-6deg);background:var(--ink);color:var(--mint);padding:10px 14px 8px;font-family:var(--display);font-size:30px;line-height:.9;text-transform:uppercase;text-decoration:none;box-shadow:4px 4px 0 var(--mint-deep)}
+.stamp small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--paper)}
+/* compact masthead on inner pages */
+body:not(.is-home) .mast-inner{grid-template-columns:auto 1fr;align-items:center;padding-block:18px}
+body:not(.is-home) .photo,body:not(.is-home) .tag{display:none}
+body:not(.is-home) .logo{width:min(100%,300px)}
+body:not(.is-home) .nav{flex-direction:row;flex-wrap:wrap;justify-content:flex-end;gap:4px 20px;margin:0}
+body:not(.is-home) .nav a{font-size:28px}
+body:not(.is-home) .nav a .k{display:none}
+
+.checker{height:30px;background:
+  conic-gradient(var(--ink) 25%,var(--mint) 0 50%,var(--ink) 0 75%,var(--mint) 0) 0 0/30px 30px;}
+.checker.thin{height:16px;background-size:16px 16px}
+
+/* ---------- board ---------- */
+.board{background:var(--board);position:relative}
+.board::before{content:"";position:absolute;inset:0;background:var(--grain);opacity:.12;pointer-events:none}
+.page{padding-block:40px 64px;position:relative}
+.page[hidden]{display:none}
+.page-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 24px;margin-bottom:28px;border-bottom:2px solid var(--line);padding-bottom:16px}
+.page-head h1{font-size:clamp(64px,10vw,128px);color:var(--paper)}
+.page-head p{max-width:46ch;color:var(--muted);margin:0}
+.eyebrow{color:var(--mint)}
+
+.panel{background:var(--panel);padding:20px;position:relative;min-width:0}
+.panel h2{font-size:34px;margin-bottom:12px}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--mint);color:var(--ink);text-decoration:none;font-family:var(--display);font-size:22px;text-transform:uppercase;padding:9px 16px 7px;line-height:1;transition:transform .12s, box-shadow .12s;box-shadow:3px 3px 0 var(--mint-deep)}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--mint-deep)}
+.btn.ghost{background:transparent;color:var(--paper);box-shadow:inset 0 0 0 2px var(--line)}
+.btn.ghost:hover{box-shadow:inset 0 0 0 2px var(--mint)}
+.btn svg{width:16px;height:16px}
+.row{display:flex;flex-wrap:wrap;gap:10px}
+
+/* home grid */
+.home-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
+.span-5{grid-column:span 5}.span-7{grid-column:span 7}.span-4{grid-column:span 4}.span-8{grid-column:span 8}.span-12{grid-column:span 12}.span-6{grid-column:span 6}
+.feature{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:20px;align-items:start}
+.feature h3{font-size:clamp(48px,6vw,80px);color:var(--mint)}
+.feature p{color:var(--muted);margin:10px 0 16px}
+.tracks{list-style:none;padding:0;margin:0 0 18px;columns:2;column-gap:20px;font-size:14px}
+.tracks li{break-inside:avoid;padding:3px 0;border-bottom:1px dotted var(--line)}
+.next-show .date{font-family:var(--display);font-size:92px;line-height:.85;color:var(--mint)}
+.next-show .venue{font-family:var(--display);font-size:32px;text-transform:uppercase;line-height:1}
+.quote-rot{min-height:170px;display:flex;flex-direction:column;justify-content:space-between}
+.quote-rot blockquote{margin:0;font-family:var(--display);font-size:clamp(30px,3.4vw,44px);line-height:1;text-transform:uppercase}
+.quote-rot cite{font-style:normal;color:var(--mint)}
+.dots{display:flex;gap:6px;margin-top:14px}
+.dots button{width:10px;height:10px;background:var(--line)}
+.dots button[aria-pressed="true"]{background:var(--mint)}
+
+/* generated covers */
+.cover{position:relative;aspect-ratio:1;max-width:100%;overflow:hidden;background:var(--c1,var(--mint));color:var(--c2,var(--ink));display:flex;flex-direction:column;justify-content:space-between;padding:10%;isolation:isolate}
+.cover::before{content:"";position:absolute;inset:0;z-index:-1;opacity:.9;background:var(--pat)}
+.cover .ct,.cover .cm{background:var(--c1,var(--mint));align-self:flex-start;padding:.06em .18em 0;max-width:100%}
+.cover .ct{font-family:var(--display);text-transform:uppercase;line-height:.88;font-size:var(--fs,2.2em);word-break:break-word}
+.cover .cm{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase}
+.cover img.art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2}
+
+/* releases */
+.filters{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:2px solid var(--line);padding:5px 12px;font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+.chip[aria-pressed="true"]{background:var(--mint);color:var(--ink);border-color:var(--mint)}
+.rel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:22px 18px}
+.rel{display:flex;flex-direction:column;gap:10px;min-width:0}
+.rel .cover{cursor:pointer;transition:transform .15s}
+.rel .cover:hover{transform:rotate(-1.5deg) scale(1.02)}
+.rel .play-badge{position:absolute;right:10px;bottom:10px;z-index:3;width:46px;height:46px;border-radius:50%;background:var(--ink);color:var(--mint);display:grid;place-items:center;opacity:0;transform:translateY(6px);transition:.15s}
+.rel .cover:hover .play-badge,.rel .cover:focus-visible .play-badge,.rel.playing .play-badge{opacity:1;transform:none}
+.rel h3{font-size:30px}
+.rel .meta{color:var(--muted)}
+.rel details{font-size:14px;color:var(--muted)}
+.rel summary{cursor:pointer;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--paper)}
+.rel ol{margin:6px 0 0;padding-left:18px}
+.rel .links{display:flex;flex-wrap:wrap;gap:6px 12px;font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+.rel .links a{color:var(--mint);text-decoration:none;border-bottom:1px solid var(--mint-deep)}
+.rel.playing h3{color:var(--mint)}
+
+/* watch */
+.screen{background:#000;aspect-ratio:16/9;max-width:100%;position:relative;overflow:hidden}
+.screen iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.screen .poster{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:24px;background:
+  linear-gradient(transparent 40%,rgba(0,0,0,.85)),
+  conic-gradient(#0d100f 25%,#151a18 0 50%,#0d100f 0 75%,#151a18 0) 0 0/60px 60px}
+.screen .poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.screen .poster > *:not(img){position:relative;z-index:1}
+.screen .poster h2{font-size:clamp(44px,7vw,96px);color:var(--paper)}
+.watch-layout{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:20px}
+.vlist{display:flex;flex-direction:column;gap:10px}
+.vitem{display:grid;grid-template-columns:120px minmax(0,1fr);gap:12px;align-items:center;text-align:left;padding:8px;background:var(--panel);border:2px solid transparent}
+.vitem[aria-pressed="true"]{border-color:var(--mint)}
+.vitem:hover{border-color:var(--line)}
+.thumb{aspect-ratio:16/9;background:conic-gradient(var(--ink) 25%,var(--mint-deep) 0 50%,var(--ink) 0 75%,var(--mint-deep) 0) 0 0/16px 16px;position:relative;overflow:hidden}
+.thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.vitem strong{font-family:var(--display);font-weight:400;font-size:26px;text-transform:uppercase;line-height:1;display:block}
+.vitem span{color:var(--muted);font-size:13px}
+.vnotes{margin-top:16px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:start}
+.vnotes p{margin:0;color:var(--muted);max-width:62ch}
+
+/* press */
+.highlights{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2px;background:var(--line);margin-bottom:28px}
+.hl{background:var(--board);padding:16px}
+.hl b{font-family:var(--display);font-weight:400;font-size:34px;line-height:.95;text-transform:uppercase;display:block;color:var(--mint)}
+.hl span{color:var(--muted);font-size:14px}
+.press-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
+.pcard{display:flex;flex-direction:column;gap:12px}
+.pcard .outlet{font-family:var(--display);font-size:40px;line-height:.9;text-transform:uppercase;color:var(--paper)}
+.pcard .hed{font-weight:700;line-height:1.3}
+.pcard blockquote{margin:0;padding:10px 14px;background:var(--mint);color:var(--ink);font-family:var(--display);font-size:26px;line-height:1;text-transform:uppercase}
+.pcard ul{margin:0;padding-left:18px;color:var(--muted);font-size:14px;display:flex;flex-direction:column;gap:4px}
+.pcard .foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.pcard .foot a{color:var(--mint)}
+.stages{margin-top:28px;font-family:var(--display);font-size:clamp(26px,3vw,38px);text-transform:uppercase;line-height:1.15;color:var(--muted)}
+.stages b{font-weight:400;color:var(--paper)}
+
+/* about */
+.about-top{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:28px;align-items:start}
+.lede{font-size:clamp(20px,2.1vw,26px);line-height:1.35;max-width:36ch;margin:0 0 18px}
+.prose p{max-width:62ch;color:#c9d0cc}
+.members{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:40px}
+.member{background:var(--panel);display:flex;flex-direction:column;min-width:0;border-top:6px solid var(--mint)}
+.member .head{padding:18px 18px 12px;text-align:left;display:block;width:100%}
+.member .num{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.member h3{font-size:clamp(40px,4vw,56px);margin:4px 0 6px}
+.member .role{color:var(--mint);font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+.member .body{padding:0 18px 18px;font-size:14px;color:#c9d0cc;display:flex;flex-direction:column;gap:10px}
+.member ul{margin:0;padding-left:16px;display:flex;flex-direction:column;gap:5px}
+.member .rep{border-top:1px dashed var(--line);padding-top:10px}
+.member .rep b{display:block;font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--paper);margin-bottom:4px}
+.member:hover{background:#28302c}
+.timeline{margin-top:44px;display:grid;grid-template-columns:120px minmax(0,1fr);border-top:2px solid var(--line)}
+.timeline dt{font-family:var(--display);font-size:40px;color:var(--mint);padding:12px 0;border-bottom:1px solid var(--line)}
+.timeline dd{margin:0;padding:16px 0;border-bottom:1px solid var(--line);color:#c9d0cc}
+.namebox{background:var(--paper);color:var(--ink);padding:20px;position:relative}
+.namebox h3{font-size:40px;margin-bottom:8px}
+.namebox p{margin:0 0 10px;font-size:15px}
+
+/* live */
+.gig{display:grid;grid-template-columns:150px minmax(0,1fr) auto;gap:20px;align-items:center;padding:18px 0;border-bottom:1px solid var(--line)}
+.gig .d{font-family:var(--display);font-size:56px;line-height:.85;color:var(--mint);text-transform:uppercase}
+.gig .d small{display:block;font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em}
+.gig h3{font-size:36px}
+.gig p{margin:4px 0 0;color:var(--muted);font-size:14px;max-width:60ch}
+.gig.past .d{color:var(--muted)}
+.gig.past h3{color:#bfc7c3}
+.sub{font-family:var(--display);font-size:40px;text-transform:uppercase;margin:44px 0 6px}
+
+/* contact */
+.contact-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.cbox{background:var(--paper);color:var(--ink);padding:24px}
+.cbox h2{font-size:56px}
+.cbox .addr{font-family:var(--mono);font-size:clamp(14px,1.6vw,18px);margin:14px 0;word-break:break-all;user-select:all}
+.cbox .btn.ghost{color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
+.socials{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:2px;background:var(--line);margin-top:24px}
+.socials a{background:var(--board);padding:18px 16px;text-decoration:none;display:flex;justify-content:space-between;align-items:center;font-family:var(--display);font-size:30px;text-transform:uppercase;transition:background .15s,color .15s}
+.socials a span{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.socials a:hover{background:var(--mint);color:var(--ink)}
+.socials a:hover span{color:var(--ink)}
+
+/* footer */
+footer{background:var(--ink);padding-block:36px 40px;color:var(--muted);font-size:13px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:end}
+footer img{width:220px;max-width:100%;height:auto;opacity:.9}
+
+/* player dock */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--ink);border-top:3px solid var(--mint);padding-bottom:env(safe-area-inset-bottom,0px)}
+.dock-inner{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:14px;align-items:center;padding-block:10px;padding-left:var(--gutter-l);padding-right:var(--gutter-r);max-width:1240px;margin:0 auto}
+.dock .mini{width:56px;height:56px;padding:6px}
+.dock .mini .cm{display:none}.dock .mini{justify-content:center;padding:4px}.dock .mini .ct{font-size:13px;line-height:.95}
+.dock .now{min-width:0}
+.dock .now b{font-family:var(--display);font-weight:400;font-size:26px;text-transform:uppercase;line-height:1;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dock .now span{color:var(--muted)}
+.dock .ctrl{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.seg{display:inline-flex;border:2px solid var(--line)}
+.seg button{padding:5px 10px;font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+.seg button[aria-pressed="true"]{background:var(--mint);color:var(--ink)}
+.dock .frame{max-width:1240px;margin:0 auto;padding-left:var(--gutter-l);padding-right:var(--gutter-r)}
+.dock .frame iframe{width:100%;height:152px;border:0;display:block;border-radius:12px;margin-bottom:10px}
+.dock .frame.apple iframe{height:175px}
+.dock .outs{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+.dock .outs a{color:var(--mint)}
+.toggle-frame{font-family:var(--mono);font-size:11px;text-transform:uppercase;color:var(--muted)}
+
+@media (max-width: 960px){
+  .mast-inner{grid-template-columns:1fr}
+  .photo{justify-self:stretch;max-width:none}
+  .nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 18px;margin-bottom:24px}
+  .nav a{font-size:40px}
+  body:not(.is-home) .mast-inner{grid-template-columns:1fr}
+  body:not(.is-home) .nav{display:flex;justify-content:flex-start}
+  .span-5,.span-7,.span-4,.span-8,.span-6{grid-column:span 12}
+  .watch-layout,.about-top{grid-template-columns:1fr}
+  .members{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .contact-grid{grid-template-columns:1fr}
+}
+@media (max-width: 600px){
+  .feature{grid-template-columns:1fr}
+  .feature .cover{max-width:240px}
+  .tracks{columns:1}
+  .members{grid-template-columns:1fr}
+  .gig{grid-template-columns:1fr;gap:8px}
+  .timeline{grid-template-columns:80px minmax(0,1fr)}
+  .timeline dt{font-size:30px}
+  .stamp{left:8px}
+  .dock .ctrl .seg{display:none}
+  .dock-inner{grid-template-columns:48px minmax(0,1fr) auto}
+  .dock .mini{width:48px;height:48px}
+  .vnotes{grid-template-columns:1fr}
+  .press-grid{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+</head>
+<body>
+<header class="mast" id="top">
+  <div class="wrap mast-inner">
+    <div>
+      <a class="logo" href="#home" aria-label="sounds mint — home"><img src="assets/logo-ink.png" alt="sounds mint" width="1831" height="379"></a>
+      <p class="tag mono">London post-punk &amp; alternative rock four-piece · est. 2022</p>
+      <nav aria-label="Main">
+        <ul class="nav" id="nav">
+          <li><a href="#about"><span class="k">01</span>The Band</a></li>
+          <li><a href="#music"><span class="k">02</span>Music</a></li>
+          <li><a href="#watch"><span class="k">03</span>Watch</a></li>
+          <li><a href="#live"><span class="k">04</span>Live</a></li>
+          <li><a href="#press"><span class="k">05</span>Press</a></li>
+          <li><a href="#contact"><span class="k">06</span>Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="photo">
+      <figure class="duo" style="margin:0">
+        <img src="assets/band.jpg" alt="sounds mint — the four members photographed from below under a skylight" width="1500" height="1359">
+        <figcaption class="mono">Hover for colour</figcaption>
+      </figure>
+      <a class="stamp" href="#music" data-play="milk-it">Milk It<small>The mixtape · out now ▶</small></a>
+    </div>
+  </div>
+  <div class="checker" aria-hidden="true"></div>
+</header>
+
+<main class="board">
+
+  <!-- HOME -->
+  <section class="page wrap" id="p-home" data-page="home">
+    <div class="home-grid">
+      <article class="panel span-8">
+        <p class="mono eyebrow">Latest release · 18 Mar 2026</p>
+        <div class="feature">
+          <div class="cover" data-cover="milk-it"></div>
+          <div>
+            <h3>“Milk It”<br>The Mixtape</h3>
+            <p>Seven new tracks, out now everywhere. The follow-up to 2025’s <em>One Day We’ll Make It Out Of Here, ’Til Then;</em> EP.</p>
+            <ul class="tracks">
+              <li>Ooo Yeh</li><li>Gillett Square</li><li>Como E Que E</li><li>Let Me In Master, It’s Cold</li><li>+ three more</li>
+            </ul>
+            <div class="row">
+              <button class="btn" data-play="milk-it"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 1.5v13l11-6.5z" fill="currentColor"/></svg>Play here</button>
+              <a class="btn ghost" href="https://open.spotify.com/artist/5hx1tP4Egp1xNgI1c5cLcK" target="_blank" rel="noopener">Spotify</a>
+              <a class="btn ghost" href="https://music.apple.com/gb/album/milk-it/1879836313" target="_blank" rel="noopener">Apple Music</a>
+            </div>
+          </div>
+        </div>
+      </article>
+      <article class="panel span-4 next-show">
+        <p class="mono eyebrow">Next show</p>
+        <div class="date">20 Nov</div>
+        <div class="venue">Nachtlicker</div>
+        <p style="color:var(--muted);margin:8px 0 16px">Seven-plus hours of curated chaos: punk theatre, hard house, absurdist comedy, techno and whatever else is hiding in the corners.</p>
+        <a class="btn ghost" href="#live">All dates</a>
+      </article>
+      <article class="panel span-7">
+        <p class="mono eyebrow">Watch</p>
+        <h2>Where’s Wally?</h2>
+        <p style="color:var(--muted);margin:0 0 14px">Rob in the stripes, causing havoc around Piccadilly Circus while the rest of the band directed him from a rooftop through one hidden earpiece.</p>
+        <a class="btn" href="#watch" data-video="3t9VLhn3394">Watch the video</a>
+      </article>
+      <article class="panel span-5 quote-rot" aria-live="polite">
+        <div>
+          <p class="mono eyebrow">Press</p>
+          <blockquote id="q-text"></blockquote>
+        </div>
+        <div>
+          <p class="mono" style="margin:12px 0 0"><cite id="q-src"></cite></p>
+          <div class="dots" id="q-dots"></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- MUSIC -->
+  <section class="page wrap" id="p-music" data-page="music" hidden>
+    <div class="page-head">
+      <div><p class="mono eyebrow">Discography · 2022 — now</p><h1>Music</h1></div>
+      <div class="filters" role="group" aria-label="Filter releases">
+        <button class="chip" aria-pressed="true" data-f="all">All</button>
+        <button class="chip" aria-pressed="false" data-f="long">Mixtapes &amp; EPs</button>
+        <button class="chip" aria-pressed="false" data-f="single">Singles</button>
+      </div>
+    </div>
+    <div class="rel-grid" id="rel-grid"></div>
+    <p class="mono" style="color:var(--muted);margin-top:28px">Also on <a href="https://tidal.com/search?q=sounds%20mint" target="_blank" rel="noopener" style="color:var(--mint)">Tidal</a> and every other streaming service. First single “Fallback” came out in 2022.</p>
+  </section>
+
+  <!-- WATCH -->
+  <section class="page wrap" id="p-watch" data-page="watch" hidden>
+    <div class="page-head">
+      <div><p class="mono eyebrow">Official videos</p><h1>Watch</h1></div>
+      <p>Every video is shot in and around London (bar one, made in Belgium). Pick one to play.</p>
+    </div>
+    <div class="watch-layout">
+      <div>
+        <div class="screen" id="screen"></div>
+        <div class="vnotes"><p id="vnote"></p><a class="btn ghost" id="vlink" target="_blank" rel="noopener" href="#">On YouTube</a></div>
+      </div>
+      <div class="vlist" id="vlist" role="group" aria-label="Videos"></div>
+    </div>
+  </section>
+
+  <!-- LIVE -->
+  <section class="page wrap" id="p-live" data-page="live" hidden>
+    <div class="page-head">
+      <div><p class="mono eyebrow">Tour dates</p><h1>Live</h1></div>
+      <p>Expect sweat, swearing and head-banging. Everyone’s welcome, including the nervous.</p>
+    </div>
+    <div id="gigs-up"></div>
+    <h2 class="sub">Recent</h2>
+    <div id="gigs-past"></div>
+  </section>
+
+  <!-- PRESS -->
+  <section class="page wrap" id="p-press" data-page="press" hidden>
+    <div class="page-head">
+      <div><p class="mono eyebrow">Selected coverage · 2024 — 2026</p><h1>Press</h1></div>
+      <p>Interviews, features and premieres. Highlights below, full pieces on each outlet’s site.</p>
+    </div>
+    <div class="highlights">
+      <div class="hl"><b>Supported Blur</b><span>On more than one occasion</span></div>
+      <div class="hl"><b>STONE EU run</b><span>Main support across Europe, plus the “Incel Saviour” collab</span></div>
+      <div class="hl"><b>Fresh Finds</b><span>Picked up by Spotify’s new-music playlist</span></div>
+      <div class="hl"><b>Sebright Arms</b><span>Three-month residency in Bethnal Green</span></div>
+      <div class="hl"><b>Sold out</b><span>Headline shows across the UK and EU</span></div>
+    </div>
+    <div class="press-grid" id="press-grid"></div>
+    <p class="stages"><span class="mono" style="display:block;color:var(--mint);margin-bottom:8px">Shared stages with</span><b>Blur</b> · <b>STONE</b> · English Teacher · DEADLETTER · deep tan · The Blinders · Connie Constance · Viji · Monster Florence · The Goa Express · Alien Chicks</p>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="page wrap" id="p-about" data-page="about" hidden>
+    <div class="page-head">
+      <div><p class="mono eyebrow">About</p><h1>The Band</h1></div>
+      <p>London post-punk and alternative rock four-piece, stylised in lower case as sounds mint.</p>
+    </div>
+    <div class="about-top">
+      <div class="prose">
+        <p class="lede">sounds mint is a London-based post-punk and alternative rock four-piece writing unsugared songs about life in a city that keeps getting more expensive.</p>
+        <p>The band was conceived at the end of 2021 and officially formed in 2022. Kelvin and Rudy had played together in an earlier band in their late teens; when that one fizzled out they spent six months “bandless”, kept writing anyway and came out of it with six demos. A friend recommended Robbie, and Layla was engineering at a studio they were working in. Both heard the demos and wanted in.</p>
+        <p>Raised on Rage Against The Machine, Nirvana and Joy Division, they mix post-punk grit with dub basslines, J Dilla-style MPC grooves and 2000s nostalgia. Kelvin writes the lyrics, but nobody is precious about instruments: Rob sometimes writes the bass lines, Layla has played guitar and Kelvin plays both.</p>
+        <p>Community sits at the centre of it. Around the “Tin” release they hosted a five-a-side football tournament in Shoreditch with artists including bby and Peter Xan, and teamed up with City Harvest London, Brixton Soup Kitchen and Feast With Us UK to raise support for London food charities.</p>
+      </div>
+      <aside class="namebox">
+        <p class="mono" style="color:var(--mint-deep)">Where the name came from</p>
+        <h3>Two mint basses</h3>
+        <p>During an early session with their friend Amin, he and Kelvin both turned up with seafoam-green bass guitars, so the band became MINT.</p>
+        <p>Then a band from the north of England sent a cease and desist, with a battle of the bands threatened to settle who kept the name.</p>
+        <p>Their Instagram was already @soundsmint, and “sounds mint” is northern slang for something being good. They kept that instead.</p>
+      </aside>
+    </div>
+
+    <h2 class="sub">Meet the band</h2>
+    <div class="members" id="members"></div>
+
+    <h2 class="sub">So far</h2>
+    <dl class="timeline" id="timeline"></dl>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="page wrap" id="p-contact" data-page="contact" hidden>
+    <div class="page-head">
+      <div><p class="mono eyebrow">Get in touch</p><h1>Contact</h1></div>
+      <p>Management, press and everything else to the band. Shows and festivals to the agent.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="cbox">
+        <p class="mono" style="color:var(--mint-deep)">Management</p>
+        <h2>Mgmt</h2>
+        <p class="addr" id="addr-mgmt">soundsmint.music@gmail.com</p>
+        <div class="row"><button class="btn" data-copy="addr-mgmt">Copy email</button><a class="btn ghost" href="mailto:soundsmint.music@gmail.com">Open mail app</a></div>
+      </div>
+      <div class="cbox">
+        <p class="mono" style="color:var(--mint-deep)">Bookings · X-Ray Touring</p>
+        <h2>Bookings</h2>
+        <p class="addr" id="addr-book">shaun@xraytouring.com</p>
+        <div class="row"><button class="btn" data-copy="addr-book">Copy email</button><a class="btn ghost" href="mailto:shaun@xraytouring.com">Open mail app</a></div>
+      </div>
+    </div>
+    <nav class="socials" aria-label="Socials and streaming">
+      <a href="https://www.instagram.com/soundsmint/" target="_blank" rel="noopener">Instagram <span>@soundsmint</span></a>
+      <a href="https://www.tiktok.com/@sounds_mint" target="_blank" rel="noopener">TikTok <span>@sounds_mint</span></a>
+      <a href="https://www.youtube.com/@sounds_mint" target="_blank" rel="noopener">YouTube <span>@sounds_mint</span></a>
+      <a href="https://x.com/sounds_mint" target="_blank" rel="noopener">X <span>@sounds_mint</span></a>
+      <a href="https://www.facebook.com/p/Sounds-MINT-100085597947221/" target="_blank" rel="noopener">Facebook <span>Sounds MINT</span></a>
+      <a href="https://open.spotify.com/artist/5hx1tP4Egp1xNgI1c5cLcK" target="_blank" rel="noopener">Spotify <span>Artist</span></a>
+      <a href="https://music.apple.com/gb/artist/sounds-mint/1626872359" target="_blank" rel="noopener">Apple Music <span>Artist</span></a>
+      <a href="https://tidal.com/search?q=sounds%20mint" target="_blank" rel="noopener">Tidal <span>Search</span></a>
+    </nav>
+  </section>
+</main>
+
+<footer>
+  <div class="checker thin" aria-hidden="true" style="margin-top:-36px;margin-bottom:28px"></div>
+  <div class="wrap">
+    <div><img src="assets/logo-white.png" alt="sounds mint" width="1831" height="379"><p class="mono" style="margin:12px 0 0">Freshest band in the trapped world.</p></div>
+    <div class="mono">Mgmt · soundsmint.music@gmail.com<br>Bookings · shaun@xraytouring.com<br>© 2026 sounds mint</div>
+  </div>
+</footer>
+
+<aside class="dock" id="dock" aria-label="Player">
+  <div class="frame" id="dock-frame" hidden></div>
+  <div class="dock-inner">
+    <div class="cover mini" id="dock-cover"></div>
+    <div class="now"><b id="dock-title">Milk It</b><span class="mono" id="dock-sub">The mixtape · out now</span></div>
+    <div class="ctrl">
+      <div class="seg" role="group" aria-label="Streaming service">
+        <button data-svc="spotify" aria-pressed="true">Spotify</button>
+        <button data-svc="apple" aria-pressed="false">Apple</button>
+      </div>
+      <button class="btn" id="dock-play" aria-label="Play">▶ Play</button>
+    </div>
+  </div>
+</aside>
+
+<script>
+/* ---------------- DATA ---------------- */
+const ARTIST_SP = "5hx1tP4Egp1xNgI1c5cLcK";
+const RELEASES = [
+  { id:"milk-it", title:"Milk It", kind:"Mixtape", group:"long", date:"18 Mar 2026", label:"Uncharted",
+    apple:["milk-it","1879836313"], sp:null, art:"ab67616d0000b273a55d7edc03b09de3ecb82636",
+    note:"Seven-track mixtape, out on Uncharted. Includes “Gillett Square” and “Let Me In Master, It’s Cold”.",
+    tracks:["Ooo Yeh","Gillett Square","Como E Que E","Let Me In Master, It’s Cold"], tracksPartial:true,
+    c1:"#93e2c2", c2:"#111413", pat:"repeating-linear-gradient(90deg,transparent 0 18px,rgba(17,20,19,.12) 18px 20px)" },
+  { id:"white-lines", title:"White Lines", kind:"Single", group:"single", date:"18 Feb 2026", label:"Uncharted",
+    apple:["white-lines-single","1872862931"], sp:null, c1:"#e9ece7", c2:"#111413",
+    pat:"repeating-linear-gradient(0deg,transparent 0 22px,#111413 22px 26px)" },
+  { id:"citys-gone", title:"City’s Gone To Sleep", kind:"Single", group:"single", date:"20 Jan 2026", label:"Uncharted",
+    apple:["citys-gone-to-sleep-single","1859846400"], sp:null, c1:"#1d2a33", c2:"#e9ece7",
+    pat:"radial-gradient(circle at 70% 30%,#e9ece7 0 8%,transparent 8.5%), radial-gradient(#ffffff22 1px,transparent 1.5px) 0 0/14px 14px" },
+  { id:"herpes", title:"Herpes", kind:"Single", group:"single", date:"2025", label:"EQT Recordings",
+    apple:["herpes-single","1844471961"], sp:null, c1:"#c94a3a", c2:"#111413",
+    pat:"radial-gradient(#111413 2px,transparent 2.5px) 0 0/12px 12px" },
+  { id:"one-day", title:"One Day We’ll Make It Out Of Here, ’Til Then;", short:"One Day…", kind:"EP", group:"long", date:"4 Jul 2025", label:"EQT Recordings",
+    apple:["one-day-well-make-it-out-of-here-til-then","1825481643"], sp:["album","695xzJK1fPEH7SIFVlFsCY"], art:"ab67616d0000b273274d38685fc9fedd1e5b7daf",
+    note:"The second EP. A snapshot of modern Britain: isolation, class and a government that isn’t listening. Opens with “1984”, closes with “Zombies”, and features STONE.",
+    tracks:["1984","Where’s Wally?","Sick Note","Spy Kids","Tin","Incel Saviour (feat. STONE)","Zombies"], unordered:true,
+    c1:"#111413", c2:"#93e2c2", fs:"1.25em",
+    pat:"conic-gradient(#111413 25%,#1f2a26 0 50%,#111413 0 75%,#1f2a26 0) 0 0/24px 24px" },
+  { id:"tin", title:"Tin", kind:"Single", group:"single", date:"27 May 2025", label:"EQT Recordings",
+    apple:["tin-single","1812457889"], sp:["track","6WP6C3Rw4HjOBPve8i9uWo"], video:"UqRnWqLDp40",
+    note:"Dub-leaning bassline sparked by The Clash; drums built on Rudy’s MPC.",
+    c1:"#b9c0bc", c2:"#111413", pat:"repeating-linear-gradient(45deg,transparent 0 10px,rgba(17,20,19,.18) 10px 12px)" },
+  { id:"zombies", title:"Zombies", kind:"Single", group:"single", date:"May 2025", label:"EQT Recordings",
+    apple:["zombies-single","1804661951"], sp:["track","3gpW3GpvFgOJSJBDlSXDUl"], video:"DfMGN1KwQFM",
+    note:"Produced by Slim Typical. A haunting story told through the eyes of the disillusioned.",
+    c1:"#3c5a3f", c2:"#e9ece7", pat:"linear-gradient(#ffffff18 2px,transparent 2px) 0 0/100% 20%, linear-gradient(90deg,#ffffff18 2px,transparent 2px) 50% 0/50% 100%" },
+  { id:"incel", title:"Incel Saviour", feat:"feat. STONE", kind:"Single", group:"single", date:"14 Oct 2024", label:"EQT Recordings",
+    apple:["incel-saviour-feat-stone-single","1770539321"], sp:["track","4XGVb4uBU6IqieUfgueBG8"], video:"DkAYe07M-F8",
+    note:"Written late one night by Kelvin and Layla, shelved for six months, then revived when STONE’s Fin heard it in the studio.",
+    c1:"#e7d84a", c2:"#111413", pat:"repeating-linear-gradient(-45deg,transparent 0 14px,#111413 14px 18px)" },
+  { id:"club-penguin", title:"Club Penguin", kind:"EP", group:"long", date:"14 Mar 2024", label:"",
+    apple:["club-penguin-ep","1732281595"], sp:null, art:"ab67616d0000b273c0ffc7f3fc45df91a457b88d",
+    note:"Debut EP, made as DIY as it gets, mostly mixed on an iPhone and earphones. Title track features Connie Constance.",
+    c1:"#cfe8f2", c2:"#111413", pat:"radial-gradient(circle at 30% 70%,#111413 0 14%,transparent 14.5%), radial-gradient(circle at 30% 70%,#e9ece7 0 20%,transparent 20.5%)" },
+  { id:"heres-the-tea", title:"Here’s The Tea", kind:"Single", group:"single", date:"19 Jan 2024", label:"Fresh Mint Records",
+    apple:null, sp:null, c1:"#7a5a3a", c2:"#e9ece7", pat:"radial-gradient(circle at 50% 50%,transparent 0 30%,#ffffff22 30% 32%,transparent 32% 40%,#ffffff22 40% 42%,transparent 42%)" }
+];
+const VIDEOS = [
+  { id:"3t9VLhn3394", title:"Where’s Wally?", year:"2025", rel:"one-day",
+    note:"Shot around Piccadilly Circus, the most CCTV-dense spot in the world. Rob, dressed as Wally, took instructions from the band on a rooftop through a single hidden earpiece. The band call it their most fun shoot yet." },
+  { id:"UqRnWqLDp40", title:"Tin", year:"2025", rel:"tin",
+    note:"Cold and monochrome, from empty pubs to Victoria Park and Moth Club in East London. A song about numbing out to the people in charge." },
+  { id:"DfMGN1KwQFM", title:"Zombies", year:"2025", rel:"zombies",
+    note:"Kelvin wanted the song sung like a national anthem before a match, so the video is all grassroots football on a cold London day." },
+  { id:"DkAYe07M-F8", title:"Incel Saviour (feat. STONE)", year:"2024", rel:"incel",
+    note:"Shot in Belgium. Directed by sounds mint, Louis Caldwell and Charlie Barclay Harris." },
+  { id:null, title:"Gillett Square", year:"2026", rel:"milk-it", url:"https://www.youtube.com/@sounds_mint/search?query=Gillett%20Square",
+    note:"Video for the Milk It track, released with the mixtape on 18 March 2026." },
+  { id:null, title:"Herpes", year:"2025", rel:"herpes", url:"https://music.apple.com/gb/music-video/herpes/1850012254",
+    note:"Official video for the 2025 single." },
+  { id:"__all", title:"Every upload", year:"Channel", rel:null, url:"https://www.youtube.com/@sounds_mint/videos",
+    note:"The full sounds mint YouTube channel as a playlist, newest first." }
+];
+const PRESS = [
+  { outlet:"Metal Magazine", date:"23 Jul 2025", by:"David Alarcón", url:"https://metalmagazine.eu/en/post/sounds-mint",
+    hed:"Sounds Mint: Chaos Finds Purpose",
+    quote:"There’s a lot of chewing gum music in the world these days.", qby:"Kelvin",
+    points:["Calls the One Day EP a post-punk takedown of modern Britain","Interview the day after a secret, food-drive-fuelled London show","The band on self-belief, playing to ten people, and community as protest"] },
+  { outlet:"F Word", date:"6 Aug 2025", by:"Maisie Jane Daniels", url:"https://www.fwordmag.com/single-post/sounds-mint-a-fresh-take-on",
+    hed:"A Fresh Take On London Life, Raw + Unfiltered",
+    quote:"A raw and riotous soundtrack for the priced-out, burnt-out, and still-somehow-dancing.",
+    points:["Exclusive shoot by Max Kessell, styled by Benjamin Wulf","How the name came from two mint bass guitars and a cease and desist","On live shows: expect sweat, swearing and head-banging"] },
+  { outlet:"Wonderland", date:"8 Jul 2025", by:"Wonderland Staff", url:"https://www.wonderlandmagazine.com/2025/07/08/sounds-mint-on-repeat/",
+    hed:"sounds mint Are On Repeat",
+    quote:"A vital component of the English capital’s ever growing band renaissance.",
+    points:["Each member picks the tracks behind the EP","The Clash led to “Tin”; The Chats led to “Incel Saviour”","Picks range from Portishead and Black Flag to DigDat and XXXTENTACION"] },
+  { outlet:"Mundane", date:"11 Jul 2025", by:"Mundane", url:"https://mundanemag.com/sounds-mint-unleash-their-brand-new-ep-and-frantic-visuals-for-lead-track-wheres-wally/",
+    hed:"sounds mint unleash their brand new EP and frantic visuals for “Where’s Wally”",
+    quote:"Isn’t just an EP; it’s a moment of resilience.",
+    points:["Premiere of the One Day EP and the “Where’s Wally” video","Kelvin explains the title as a mantra for hunger and persistence","Covers the Shoreditch football tournament and food-charity work"] },
+  { outlet:"Ones To Watch", date:"5 Jul 2025", by:"DJ Connor", url:"https://www.onestowatch.com/en/blog/sounds-mints-dream-lineup-smash-burger-recipe-and-lack-of-fear-to-be-seen-trying-qa",
+    hed:"sounds mint’s Dream Lineup, Smash Burger Recipe, and Lack of Fear to be Seen Trying [Q&A]",
+    quote:"Trying is way cooler than not trying.", qby:"Layla",
+    points:["The origin story: six demos after six months without a band","Kelvin’s smash burger secret is MSG and a very hot griddle","Dream lineups: Fela Kuti, and Brian Jonestown Massacre in 1996"] },
+  { outlet:"Maximum Volume", date:"4 Jun 2025", by:"Band of the Day", url:"https://maximumvolumemusic.com/band-of-the-day-sounds-mint/",
+    hed:"Band of the Day: sounds mint",
+    quote:"One of the most exciting post-punk bands across the underground.",
+    points:["Feature on the “Tin” single and video, out via EQT Recordings","Kelvin on the song as a tin man who stops feeling","Notes support slots for Blur and STONE and Spotify Fresh Finds"] },
+  { outlet:"Living Life Fearless", date:"13 May 2025", by:"Editorial Team", url:"https://livinglifefearless.co/2025/music/rising-london-post-punk-band-sounds-mint-unleash-their-new-heater-zombies/",
+    hed:"Rising London Post-Punk Band sounds mint Unleash Their New Heater “Zombies”",
+    quote:"One of the most exciting post-punk bands emerging across London right now.",
+    points:["Premiere of “Zombies”, produced by Slim Typical","Kelvin on the football video as a pre-match anthem","Traces influences to Rage Against The Machine, Nirvana and Joy Division"] },
+  { outlet:"Hashbrandnew", date:"2024", by:"Artist profile", url:"https://hashbrandnew.com/Artists/sounds+mint",
+    hed:"sounds mint: new artist profile",
+    quote:null,
+    points:["Early profile charting the move from bedroom demos to a four-piece","Credits their intense live shows across Europe","Lists Club Penguin, Here’s The Tea and the One Day EP"] },
+  { outlet:"Hanwell Hootie", date:"2024", by:"Festival line-up", url:"https://www.hanwellhootie.co.uk/lineup/sounds-mint/",
+    hed:"Line-up: sounds mint, The Viaduct Garden Stage",
+    quote:null,
+    points:["Festival booking in West London","Notes the Sebright Arms residency and shows alongside Blur","Mentions A Stones Throw Festival and the STONE EU run"] }
+];
+const MEMBERS = [
+  { name:"Kelvin Bueno", role:"Frontman · Vocals, Guitar, Bass",
+    facts:["Writes all the lyrics, and won’t sugarcoat a line","Football obsessive; the “Zombies” video was his idea","Makes the post-gig food. His smash burgers are famous in the band","Dream gig: opening for Brian Jonestown Massacre in 1996"],
+    rep:[["The Clash","The Guns Of Brixton","sparked “Tin”"],["XXXTENTACION","Revenge","shaped the chords of “Spy Kids”"]] },
+  { name:"Rudy Albarn", role:"Drums",
+    facts:["Mixes a live kit with MPC loops and samples","Made the “Tin” drums on the MPC; “Sick Note” is a single take","Rarely goes past two or three takes: the first idea is usually the best","Dream gig: playing with Fela Kuti"],
+    rep:[["Nirvana","You Know You’re Right","for the raw drum sound"],["The Strokes","The Adults Are Talking","proof a simple loop can carry a song"]] },
+  { name:"Robbie Carter", nick:"Rob", role:"Lead Guitar",
+    facts:["The band’s morale officer, according to everyone else","Starred as Wally in the “Where’s Wally?” video","Sometimes writes the bass lines","Advice to his younger self: get ready for lots of changes"],
+    rep:[["DigDat","Pink Notes","brought the darkness out"],["Black Flag","Beat My Head Against The Wall","the grind, then the sofa, then repeat"]] },
+  { name:"Layla Narramore", role:"Bass Guitar · Production", joined:"Joined 2022",
+    facts:["Met the band while engineering at a studio they worked in","Wanted to write a one-note bass line, which became “Incel Saviour”","Works two jobs plus session work to stay in London","The band’s baker. She brings the cookies"],
+    rep:[["The Chats","Smoko","a bass-led, Australian-sounding song"],["Portishead","Mysterons","the eerie build of “Zombies”"]] }
+];
+const TIMELINE = [
+  ["2021","Kelvin and Rudy, out of their previous band, start writing again. Six demos become the first sounds mint songs."],
+  ["2022","Robbie and Layla join. First single “Fallback” and first show."],
+  ["2023","Three-month residency at the Sebright Arms. Shows with Blur, then support slots for Monster Florence and The Goa Express."],
+  ["2024","“Here’s The Tea” in January, debut EP Club Penguin in March. “Incel Saviour” with STONE in October, then the STONE EU run. A Stones Throw and Hanwell Hootie festivals."],
+  ["2025","“Zombies” and “Tin” via EQT Recordings, Spotify Fresh Finds, then the One Day We’ll Make It Out Of Here, ’Til Then; EP in July. “Herpes” later in the year."],
+  ["2026","“City’s Gone To Sleep” and “White Lines”, then Milk It, the mixtape, on 18 March."]
+];
+const GIGS_UP = [
+  { d:"20 Nov", y:"2026", title:"Nachtlicker", where:"London",
+    desc:"Seven-plus hours of curated chaos: punk theatre, hard house, absurdist comedy, techno, speed garage, dnb, nineties eurorave and cult-punk-drag.", url:"https://www.nachtlicker.com", cta:"Info" },
+  { d:"27 Jan", y:"2027 · Wed · 19:30", title:"The Hope & Ruin", where:"Brighton",
+    desc:"Hidden Herd Presents, Brighton’s new-music discovery night. With The DSM IV, Not Richard & Her Majesty and more.", url:"https://link.dice.fm/gyHoMGGK26b", cta:"Tickets" },
+  { d:"TBA", y:"Free entry", title:"Prison Experiment", where:"The Old Dispensary, London",
+    desc:"Free show. RSVP by email to blackpunkparty@gmail.com.", copy:"blackpunkparty@gmail.com", cta:"Copy RSVP email" }
+];
+const GIGS_PAST = [
+  { d:"12 Sep", y:"", title:"SXSE Late Summer Edition", where:"Dash The Henge Store, London" },
+  { d:"16 Jun", y:"2026", title:"The Underworld", where:"Camden, London" },
+  { d:"28 Mar", y:"", title:"Sebright Arms", where:"London" }
+];
+const QUOTES = PRESS.filter(p=>p.quote).map(p=>({t:p.quote,s:p.outlet+(p.qby?" · "+p.qby:"")}));
+
+/* ---------------- ENV ----------------
+   Artifact previews can't load third-party players or images; on the band's own domain everything embeds. */
+const EMBEDS = /^https?:$/.test(location.protocol) && !/claude|anthropic|localhost|127\.0\.0\.1/i.test(location.hostname);
+const $ = (s,el=document)=>el.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const byId = id => RELEASES.find(r=>r.id===id);
+
+function coverHTML(r, opts={}){
+  const t = r.short || r.title;
+  const art = (EMBEDS && r.art) ? `<img class="art" src="https://i.scdn.co/image/${r.art}" alt="" loading="lazy" onerror="this.remove()">` : "";
+  return `<span class="cm">${esc(r.kind)} · ${esc(r.date.split(" ").pop())}</span>
+    <span class="ct">${esc(t)}</span>
+    <span class="cm">sounds mint</span>${art}${opts.badge?'<span class="play-badge" aria-hidden="true">▶</span>':''}`;
+}
+function paintCover(el, r, opts){
+  el.style.setProperty("--c1", r.c1); el.style.setProperty("--c2", r.c2);
+  el.style.setProperty("--pat", r.pat||"none");
+  if (r.fs) el.style.setProperty("--fs", r.fs);
+  el.innerHTML = coverHTML(r, opts);
+}
+const appleUrl = r => r.apple ? `https://music.apple.com/gb/album/${r.apple[0]}/${r.apple[1]}` : "https://music.apple.com/gb/artist/sounds-mint/1626872359";
+const spUrl = r => r.sp ? `https://open.spotify.com/${r.sp[0]}/${r.sp[1]}` : `https://open.spotify.com/artist/${ARTIST_SP}`;
+
+/* ---------------- PLAYER ---------------- */
+let current = "milk-it", svc = "spotify";
+try { svc = localStorage.getItem("sm-svc") || "spotify"; } catch(e){}
+function setSvc(s){
+  svc = s; try{localStorage.setItem("sm-svc",s)}catch(e){}
+  document.querySelectorAll("[data-svc]").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.svc===s)));
+  if (!$("#dock-frame").hidden) play(current);
+}
+function play(id){
+  const r = byId(id); if(!r) return;
+  current = id;
+  paintCover($("#dock-cover"), r);
+  $("#dock-title").textContent = r.title + (r.feat? " ("+r.feat+")":"");
+  $("#dock-sub").textContent = `${r.kind} · ${r.date}`;
+  document.querySelectorAll(".rel").forEach(el=>el.classList.toggle("playing", el.dataset.id===id));
+  const f = $("#dock-frame");
+  const outs = `<div class="outs"><a href="${spUrl(r)}" target="_blank" rel="noopener">Spotify ↗</a><a href="${appleUrl(r)}" target="_blank" rel="noopener">Apple Music ↗</a>${r.video?`<a href="https://www.youtube.com/watch?v=${r.video}" target="_blank" rel="noopener">YouTube ↗</a>`:""}<button class="toggle-frame" id="hide-frame">Hide player</button></div>`;
+  if (EMBEDS){
+    let src, cls="";
+    if (svc==="apple" && r.apple){ src=`https://embed.music.apple.com/gb/album/${r.apple[0]}/${r.apple[1]}`; cls="apple"; }
+    else if (r.sp){ src=`https://open.spotify.com/embed/${r.sp[0]}/${r.sp[1]}?utm_source=generator&theme=0`; }
+    else if (r.apple && svc!=="spotify"){ src=`https://embed.music.apple.com/gb/album/${r.apple[0]}/${r.apple[1]}`; cls="apple"; }
+    else if (r.apple && svc==="spotify"){ src=`https://open.spotify.com/embed/artist/${ARTIST_SP}?utm_source=generator&theme=0`; }
+    else { src=`https://open.spotify.com/embed/artist/${ARTIST_SP}?utm_source=generator&theme=0`; }
+    f.className = "frame " + cls;
+    f.innerHTML = `<iframe title="${esc(r.title)} player" src="${src}" allow="autoplay *; encrypted-media *; clipboard-write; fullscreen; picture-in-picture" loading="lazy"></iframe>${outs}`;
+  } else {
+    f.className = "frame";
+    f.innerHTML = `<p class="mono" style="color:var(--muted);margin:10px 0 6px">Preview copy: the in-page player switches on when the site is live on its own domain. Listen now on:</p>${outs}`;
+  }
+  f.hidden = false;
+  $("#dock-play").textContent = "▶ Playing";
+  $("#hide-frame").addEventListener("click", ()=>{ f.hidden = true; $("#dock-play").textContent = "▶ Play"; });
+}
+$("#dock-play").addEventListener("click", ()=> $("#dock-frame").hidden ? play(current) : ($("#dock-frame").hidden=true, $("#dock-play").textContent="▶ Play"));
+document.querySelectorAll("[data-svc]").forEach(b=>b.addEventListener("click",()=>setSvc(b.dataset.svc)));
+
+/* ---------------- RENDER: music ---------------- */
+function renderReleases(filter="all"){
+  const g = $("#rel-grid"); g.innerHTML = "";
+  RELEASES.filter(r=>filter==="all"||r.group===filter).forEach(r=>{
+    const el = document.createElement("article");
+    el.className = "rel"; el.dataset.id = r.id;
+    const tl = r.tracks ? `<details><summary>${r.unordered?"Tracks":"Tracklist"}${r.tracksPartial?" (selected)":""}</summary>${r.unordered?"<ul style='margin:6px 0 0;padding-left:18px'>":"<ol>"}${r.tracks.map(t=>`<li>${esc(t)}</li>`).join("")}${r.unordered?"</ul>":"</ol>"}</details>`:"";
+    el.innerHTML = `<div class="cover" role="button" tabindex="0" aria-label="Play ${esc(r.title)}"></div>
+      <div><h3>${esc(r.title)}</h3><div class="meta mono">${esc(r.kind)}${r.feat?" · "+esc(r.feat):""} · ${esc(r.date)}${r.label?" · "+esc(r.label):""}</div></div>
+      ${r.note?`<p style="margin:0;color:#c9d0cc;font-size:14px">${esc(r.note)}</p>`:""}
+      ${tl}
+      <div class="links"><a href="${spUrl(r)}" target="_blank" rel="noopener">Spotify</a>${r.apple?`<a href="${appleUrl(r)}" target="_blank" rel="noopener">Apple Music</a>`:""}${r.video?`<a href="#watch" data-video="${r.video}">Video</a>`:""}</div>`;
+    const c = el.querySelector(".cover"); paintCover(c, r, {badge:true});
+    const go = ()=>play(r.id);
+    c.addEventListener("click", go);
+    c.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); go(); }});
+    if (r.id===current && !$("#dock-frame").hidden) el.classList.add("playing");
+    g.appendChild(el);
+  });
+}
+document.querySelectorAll("[data-f]").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll("[data-f]").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));
+  renderReleases(b.dataset.f);
+}));
+
+/* ---------------- RENDER: watch ---------------- */
+let currentVideo = VIDEOS[0];
+function showVideo(v, autoplay){
+  currentVideo = v;
+  document.querySelectorAll(".vitem").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.v===String(VIDEOS.indexOf(v)))));
+  const s = $("#screen");
+  const ext = v.id && v.id!=="__all" ? `https://www.youtube.com/watch?v=${v.id}` : v.url;
+  $("#vnote").textContent = v.note;
+  $("#vlink").href = ext;
+  $("#vlink").textContent = v.url && v.url.includes("apple") ? "On Apple Music" : "On YouTube";
+  if (EMBEDS && autoplay && v.id){
+    const src = v.id==="__all" ? "https://www.youtube-nocookie.com/embed/videoseries?list=UUh_z_mVjnIPXXibchl09-Sg" : `https://www.youtube-nocookie.com/embed/${v.id}?autoplay=1&rel=0`;
+    s.innerHTML = `<iframe title="${esc(v.title)}" src="${src}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+    return;
+  }
+  const thumb = (EMBEDS && v.id && v.id!=="__all") ? `<img src="https://i.ytimg.com/vi/${v.id}/maxresdefault.jpg" alt="" onerror="this.remove()">` : "";
+  const canEmbed = EMBEDS && v.id;
+  s.innerHTML = `<div class="poster">${thumb}<p class="mono eyebrow">${esc(v.year)} · official video</p><h2>${esc(v.title)}</h2>
+    <div class="row" style="margin-top:14px">${canEmbed?`<button class="btn" id="vplay">▶ Play</button>`:`<a class="btn" href="${ext}" target="_blank" rel="noopener">▶ Watch ${v.url && v.url.includes("apple")?"on Apple Music":"on YouTube"}</a>`}</div></div>`;
+  const pb = $("#vplay"); if (pb) pb.addEventListener("click", ()=>showVideo(v,true));
+}
+function renderVideos(){
+  const l = $("#vlist");
+  l.innerHTML = VIDEOS.map((v,i)=>{
+    const th = (EMBEDS && v.id && v.id!=="__all") ? `<img src="https://i.ytimg.com/vi/${v.id}/mqdefault.jpg" alt="" loading="lazy" onerror="this.remove()">` : "";
+    return `<button class="vitem" data-v="${i}" aria-pressed="false"><span class="thumb">${th}</span><span><strong>${esc(v.title)}</strong><span class="mono">${esc(v.year)}</span></span></button>`;
+  }).join("");
+  l.querySelectorAll(".vitem").forEach(b=>b.addEventListener("click",()=>showVideo(VIDEOS[+b.dataset.v], true)));
+  showVideo(VIDEOS[0], false);
+}
+
+/* ---------------- RENDER: press, about, live ---------------- */
+function renderPress(){
+  $("#press-grid").innerHTML = PRESS.map(p=>`<article class="panel pcard">
+    <div><p class="mono eyebrow" style="margin:0 0 6px">${esc(p.date)} · ${esc(p.by)}</p><div class="outlet">${esc(p.outlet)}</div></div>
+    <div class="hed">${esc(p.hed)}</div>
+    ${p.quote?`<blockquote>“${esc(p.quote)}”${p.qby?`<span class="mono" style="display:block;font-size:10px;margin-top:6px">— ${esc(p.qby)}</span>`:""}</blockquote>`:""}
+    <ul>${p.points.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
+    <div class="foot"><span class="mono" style="color:var(--muted)">${new URL(p.url).hostname.replace("www.","")}</span><a class="mono" href="${p.url}" target="_blank" rel="noopener">Read the piece ↗</a></div>
+  </article>`).join("");
+}
+function renderAbout(){
+  $("#members").innerHTML = MEMBERS.map((m,i)=>`<article class="member">
+    <div class="head"><span class="num">${["Vox","Drums","Guitar","Bass"][i]}</span><h3>${esc(m.name.split(" ")[0])}<br>${esc(m.name.split(" ").slice(1).join(" "))}</h3>
+      <span class="role">${esc(m.role)}${m.nick?` · aka ${esc(m.nick)}`:""}${m.joined?` · ${esc(m.joined)}`:""}</span></div>
+    <div class="body"><ul>${m.facts.map(f=>`<li>${esc(f)}</li>`).join("")}</ul>
+      <div class="rep"><b>On repeat</b>${m.rep.map(r=>`<div>${esc(r[0])}, “${esc(r[1])}” <span style="color:var(--muted)">— ${esc(r[2])}</span></div>`).join("")}</div></div>
+  </article>`).join("");
+  $("#timeline").innerHTML = TIMELINE.map(t=>`<dt>${t[0]}</dt><dd>${esc(t[1])}</dd>`).join("");
+}
+function gigHTML(g, past){
+  const action = g.url ? `<a class="btn ${past?'ghost':''}" href="${g.url}" target="_blank" rel="noopener">${esc(g.cta)}</a>`
+    : g.copy ? `<button class="btn ghost" data-copytext="${esc(g.copy)}">${esc(g.cta)}</button>` : "";
+  return `<div class="gig ${past?'past':''}"><div class="d">${esc(g.d)}${g.y?`<small>${esc(g.y)}</small>`:""}</div>
+    <div><h3>${esc(g.title)}</h3><p class="mono" style="color:var(--paper)">${esc(g.where)}</p>${g.desc?`<p>${esc(g.desc)}</p>`:""}</div><div>${action}</div></div>`;
+}
+function renderLive(){
+  $("#gigs-up").innerHTML = GIGS_UP.map(g=>gigHTML(g,false)).join("");
+  $("#gigs-past").innerHTML = GIGS_PAST.map(g=>gigHTML(g,true)).join("");
+}
+
+/* ---------------- quotes ---------------- */
+let qi = 0, qTimer;
+function showQuote(i){
+  qi = (i+QUOTES.length)%QUOTES.length;
+  $("#q-text").textContent = "“"+QUOTES[qi].t+"”";
+  $("#q-src").textContent = QUOTES[qi].s;
+  document.querySelectorAll("#q-dots button").forEach((b,j)=>b.setAttribute("aria-pressed", String(j===qi)));
+}
+$("#q-dots").innerHTML = QUOTES.map((q,i)=>`<button aria-label="Quote ${i+1}: ${esc(q.s)}" aria-pressed="false" data-q="${i}"></button>`).join("");
+$("#q-dots").addEventListener("click", e=>{ const b=e.target.closest("[data-q]"); if(b){ showQuote(+b.dataset.q); clearInterval(qTimer);} });
+showQuote(0);
+if (!matchMedia("(prefers-reduced-motion: reduce)").matches) qTimer = setInterval(()=>showQuote(qi+1), 5200);
+
+/* ---------------- copy ---------------- */
+document.addEventListener("click", async e=>{
+  const b = e.target.closest("[data-copy],[data-copytext]"); if(!b) return;
+  const text = b.dataset.copytext || document.getElementById(b.dataset.copy).textContent.trim();
+  const old = b.textContent;
+  try { await navigator.clipboard.writeText(text); b.textContent = "Copied"; }
+  catch(err){
+    const el = b.dataset.copy ? document.getElementById(b.dataset.copy) : null;
+    if (el){ const r=document.createRange(); r.selectNodeContents(el); const s=getSelection(); s.removeAllRanges(); s.addRange(r); }
+    b.textContent = el ? "Selected" : text;
+  }
+  setTimeout(()=>b.textContent = old, 1800);
+});
+
+/* ---------------- routing ---------------- */
+const PAGES = ["home","music","watch","live","press","about","contact"];
+function route(){
+  const h = location.hash.replace("#","");
+  const page = PAGES.includes(h) ? h : "home";
+  document.body.classList.toggle("is-home", page==="home");
+  document.querySelectorAll("[data-page]").forEach(s=>s.hidden = s.dataset.page!==page);
+  document.querySelectorAll("#nav a").forEach(a=>{ if(a.getAttribute("href")!=="#"+page) a.removeAttribute("aria-current"); else a.setAttribute("aria-current","page"); });
+  document.title = page==="home" ? "Sounds Mint" : "Sounds Mint · " + page[0].toUpperCase()+page.slice(1);
+  if (location.hash) window.scrollTo({top:0});
+}
+addEventListener("hashchange", route);
+
+/* play / video buttons anywhere */
+document.addEventListener("click", e=>{
+  const p = e.target.closest("[data-play]");
+  if (p){ play(p.dataset.play); }
+  const v = e.target.closest("[data-video]");
+  if (v){ const vid = VIDEOS.find(x=>x.id===v.dataset.video); if(vid) setTimeout(()=>showVideo(vid,false),0); }
+});
+
+/* init */
+paintCover(document.querySelector('[data-cover="milk-it"]'), byId("milk-it"));
+paintCover($("#dock-cover"), byId("milk-it"));
+document.querySelectorAll("[data-svc]").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.svc===svc)));
+renderReleases(); renderVideos(); renderPress(); renderAbout(); renderLive();
+route();
+</script>
+
+</body>
+</html>
