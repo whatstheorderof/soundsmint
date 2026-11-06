@@ -223,6 +223,28 @@ body:not(.is-home) .nav a .k{display:none}
 .gig.past h3{color:#bfc7c3}
 .sub{font-family:var(--display);font-size:40px;text-transform:uppercase;margin:44px 0 6px}
 
+/* gallery */
+.gal{columns:3 280px;column-gap:14px}
+.gal-item{break-inside:avoid;margin:0 0 14px;display:block;width:100%;position:relative;padding:0;background:var(--panel);overflow:hidden}
+.gal-item img{width:100%;height:auto;display:block;transition:transform .35s, filter .35s}
+.gal-item:hover img{transform:scale(1.03)}
+.gal-item .cap{position:absolute;left:0;right:0;bottom:0;padding:24px 12px 10px;background:linear-gradient(transparent,rgba(17,20,19,.85));color:var(--paper);text-align:left;opacity:0;transition:opacity .2s}
+.gal-item:hover .cap,.gal-item:focus-visible .cap{opacity:1}
+.gal-item .cap b{font-family:var(--display);font-weight:400;font-size:26px;text-transform:uppercase;display:block;line-height:1}
+.gal-item[hidden]{display:none}
+.lightbox{position:fixed;inset:0;z-index:40;background:rgba(10,12,11,.96);display:grid;grid-template-rows:auto minmax(0,1fr) auto;padding:max(12px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(12px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.lightbox[hidden]{display:none}
+.lb-top{display:flex;justify-content:space-between;align-items:center;gap:12px;color:var(--muted)}
+.lb-stage{display:grid;place-items:center;min-height:0;position:relative}
+.lb-stage img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:52px;height:52px;border-radius:50%;background:var(--mint);color:var(--ink);font-size:22px;display:grid;place-items:center}
+.lb-prev{left:0}.lb-next{right:0}
+.lb-cap{text-align:center;padding-top:10px}
+.lb-cap b{font-family:var(--display);font-weight:400;font-size:30px;text-transform:uppercase;color:var(--paper)}
+.about-hero{margin:0 0 32px;position:relative}
+.about-hero img{width:100%;height:auto;display:block;aspect-ratio:4/3;object-fit:cover;max-height:78vh}
+.about-hero figcaption{position:absolute;left:12px;bottom:12px;background:var(--ink);color:var(--paper);padding:4px 8px}
+
 /* contact */
 .contact-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 .cbox{background:var(--paper);color:var(--ink);padding:24px}
@@ -304,9 +326,10 @@ footer img{width:220px;max-width:100%;height:auto;opacity:.9}
           <li><a href="#about"><span class="k">01</span>The Band</a></li>
           <li><a href="#music"><span class="k">02</span>Music</a></li>
           <li><a href="#watch"><span class="k">03</span>Watch</a></li>
-          <li><a href="#live"><span class="k">04</span>Live</a></li>
-          <li><a href="#press"><span class="k">05</span>Press</a></li>
-          <li><a href="#contact"><span class="k">06</span>Contact</a></li>
+          <li><a href="#gallery"><span class="k">04</span>Gallery</a></li>
+          <li><a href="#live"><span class="k">05</span>Live</a></li>
+          <li><a href="#press"><span class="k">06</span>Press</a></li>
+          <li><a href="#contact"><span class="k">07</span>Contact</a></li>
         </ul>
       </nav>
     </div>
@@ -408,6 +431,19 @@ footer img{width:220px;max-width:100%;height:auto;opacity:.9}
     </div>
   </section>
 
+  <!-- GALLERY -->
+  <section class="page wrap" id="p-gallery" data-page="gallery" hidden>
+    <div class="page-head">
+      <div><p class="mono eyebrow">Photos</p><h1>Gallery</h1></div>
+      <div class="filters" role="group" aria-label="Filter photos">
+        <button class="chip" aria-pressed="true" data-g="all">All</button>
+        <button class="chip" aria-pressed="false" data-g="live">Live</button>
+        <button class="chip" aria-pressed="false" data-g="shoot">Shoots</button>
+      </div>
+    </div>
+    <div class="gal" id="gal"></div>
+  </section>
+
   <!-- LIVE -->
   <section class="page wrap" id="p-live" data-page="live" hidden>
     <div class="page-head">
@@ -442,6 +478,10 @@ footer img{width:220px;max-width:100%;height:auto;opacity:.9}
       <div><p class="mono eyebrow">About</p><h1>The Band</h1></div>
       <p>London-based post-punk and alternative rock four-piece, stylised as sounds mint.</p>
     </div>
+    <figure class="about-hero">
+      <img src="assets/gallery/sounds-mint1-1920w.webp" alt="sounds mint: three members standing against a white studio wall, one lying on the floor in front" width="1800" height="1350" loading="lazy">
+      <figcaption class="mono">sounds mint</figcaption>
+    </figure>
     <div class="about-top">
       <div class="prose">
         <p class="lede">sounds mint was conceived at the end of 2021 and officially born in 2022, but it was something that felt like years in the making.</p>
@@ -513,6 +553,12 @@ footer img{width:220px;max-width:100%;height:auto;opacity:.9}
     </div>
   </div>
 </aside>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" hidden>
+  <div class="lb-top"><span class="mono" id="lb-count"></span><button class="btn ghost" id="lb-close">Close ✕</button></div>
+  <div class="lb-stage"><img id="lb-img" alt=""><button class="lb-nav lb-prev" id="lb-prev" aria-label="Previous photo">←</button><button class="lb-nav lb-next" id="lb-next" aria-label="Next photo">→</button></div>
+  <div class="lb-cap"><b id="lb-title"></b><div class="mono" id="lb-sub" style="color:var(--muted)"></div></div>
+</div>
 
 <script>
 /* ---------------- DATA ---------------- */
@@ -604,8 +650,8 @@ function cleanTitle(raw){
 /* Watch page sections, decided from the video title (and the channel tab it came from) */
 const VCATS = [
   { key:"music",  label:"Music videos", blurb:"Official videos, visualisers and lyric videos.", empty:"new music videos", link:"https://www.youtube.com/@sounds_mint/videos" },
-  { key:"shorts", label:"Shorts",       blurb:"Quick vertical clips from the channel.", empty:"new Shorts",          link:"https://www.youtube.com/@sounds_mint/shorts" },
   { key:"live",   label:"Live",         blurb:"Gigs, sessions and live sets.", empty:"new live videos",                     link:"https://www.youtube.com/@sounds_mint/streams" },
+  { key:"shorts", label:"Shorts",       blurb:"Quick vertical clips from the channel.", empty:"new Shorts",          link:"https://www.youtube.com/@sounds_mint/shorts" },
   { key:"bts",    label:"BTS & studio", blurb:"Behind the scenes, in the studio and on the road.", empty:"behind-the-scenes and studio videos",  link:"https://www.youtube.com/@sounds_mint/videos" }
 ];
 function categorise(raw, src={}){
@@ -696,13 +742,23 @@ const GIGS_PAST = [
 ];
 const SOCIALS = [
   ["Instagram","@soundsmint","https://www.instagram.com/soundsmint/"],
-  ["TikTok","@sounds_mint","https://www.tiktok.com/@sounds_mint"],
+  ["TikTok","@sounds.mint","https://www.tiktok.com/@sounds.mint"],
   ["YouTube","@sounds_mint","https://www.youtube.com/@sounds_mint"],
   ["X","@sounds_mint","https://x.com/sounds_mint"],
   ["Facebook","Sounds MINT","https://www.facebook.com/p/Sounds-MINT-100085597947221/"],
   ["Spotify","Artist","https://open.spotify.com/artist/5hx1tP4Egp1xNgI1c5cLcK"],
   ["Apple Music","Artist","https://music.apple.com/gb/artist/sounds-mint/1626872359"],
   ["Tidal","Search","https://tidal.com/search?q=sounds%20mint"]
+];
+const PHOTOS = [
+  { f:"sounds-mint1-1920w", w:1800, h:1350, t:"White room",         sub:"Press shoot",            g:"shoot", alt:"The band against a white studio wall, one member lying on the floor" },
+  { f:"skylight",           w:1800, h:1630, t:"Under the skylight", sub:"Press shoot",            g:"shoot", alt:"The four members photographed from below under a skylight" },
+  { f:"flyover",            w:1440, h:960,  t:"Under the flyover",  sub:"Press shoot",            g:"shoot", alt:"Black and white photo of the band under a graffiti-covered flyover" },
+  { f:"the-stands",         w:1440, h:1440, t:"In the stands",      sub:"Matching tracksuits, empty stadium", g:"shoot", alt:"The band in matching teal tracksuits sitting in empty stadium seats" },
+  { f:"live-front",         w:1440, h:1800, t:"Live",               sub:"Vocals and guitar",      g:"live",  alt:"Singer mid-shout at the mic with the guitarist behind him on stage" },
+  { f:"live-guitar",        w:1440, h:1800, t:"Live",               sub:"Guitar",                 g:"live",  alt:"Guitarist in a yellow T-shirt with a white Telecaster on stage" },
+  { f:"live-bass",          w:1440, h:1800, t:"Live",               sub:"Bass",                   g:"live",  alt:"Bassist playing a red bass guitar on stage" },
+  { f:"live-drums",         w:1440, h:1799, t:"Live",               sub:"Drums",                  g:"live",  alt:"Drummer playing a chrome drum kit on stage" }
 ];
 const QUOTES = PRESS.filter(p=>p.quote).map(p=>({t:p.quote,s:p.outlet+(p.qby?" · "+p.qby:"")}));
 
@@ -890,6 +946,43 @@ function renderLive(){
 
 document.querySelectorAll("[data-socials]").forEach(n=>n.innerHTML = SOCIALS.map(([name,handle,url])=>`<a href="${url}" target="_blank" rel="noopener">${esc(name)} <span>${esc(handle)}</span></a>`).join(""));
 
+/* ---------------- gallery ---------------- */
+let lbList = [], lbIndex = 0, lbReturn = null;
+function renderGallery(filter="all"){
+  $("#gal").innerHTML = PHOTOS.map((p,i)=>`<button class="gal-item" data-i="${i}" ${filter!=="all"&&p.g!==filter?"hidden":""} aria-label="Open photo: ${esc(p.alt)}">
+      <img src="assets/gallery/${p.f}-sm.webp" alt="${esc(p.alt)}" width="${p.w}" height="${p.h}" loading="lazy" decoding="async">
+      <span class="cap"><b>${esc(p.t)}</b><span class="mono">${esc(p.sub)}</span></span></button>`).join("");
+  $("#gal").querySelectorAll(".gal-item").forEach(b=>b.addEventListener("click",()=>{
+    lbList = PHOTOS.map((p,i)=>i).filter(i=>filter==="all"||PHOTOS[i].g===filter);
+    openLightbox(lbList.indexOf(+b.dataset.i), b);
+  }));
+}
+function showPhoto(){
+  const p = PHOTOS[lbList[lbIndex]];
+  $("#lb-img").src = `assets/gallery/${p.f}.webp`; $("#lb-img").alt = p.alt;
+  $("#lb-title").textContent = p.t; $("#lb-sub").textContent = p.sub;
+  $("#lb-count").textContent = `${lbIndex+1} / ${lbList.length}`;
+}
+function openLightbox(i, from){ lbIndex = i; lbReturn = from; showPhoto(); $("#lightbox").hidden = false; document.body.style.overflow="hidden"; $("#lb-close").focus(); }
+function closeLightbox(){ $("#lightbox").hidden = true; document.body.style.overflow=""; if (lbReturn) lbReturn.focus(); }
+function stepPhoto(d){ lbIndex = (lbIndex + d + lbList.length) % lbList.length; showPhoto(); }
+$("#lb-close").addEventListener("click", closeLightbox);
+$("#lb-prev").addEventListener("click", ()=>stepPhoto(-1));
+$("#lb-next").addEventListener("click", ()=>stepPhoto(1));
+$("#lightbox").addEventListener("click", e=>{ if (e.target.id==="lightbox" || e.target.classList.contains("lb-stage")) closeLightbox(); });
+document.addEventListener("keydown", e=>{
+  if ($("#lightbox").hidden) return;
+  if (e.key==="Escape") closeLightbox(); else if (e.key==="ArrowLeft") stepPhoto(-1); else if (e.key==="ArrowRight") stepPhoto(1);
+});
+let touchX = null;
+$("#lightbox").addEventListener("touchstart", e=>{ touchX = e.touches[0].clientX; }, {passive:true});
+$("#lightbox").addEventListener("touchend", e=>{ if (touchX===null) return; const dx = e.changedTouches[0].clientX - touchX; if (Math.abs(dx)>50) stepPhoto(dx<0?1:-1); touchX=null; });
+document.querySelectorAll("[data-g]").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll("[data-g]").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));
+  renderGallery(b.dataset.g);
+}));
+renderGallery();
+
 /* ---------------- quotes ---------------- */
 let qi = 0, qTimer;
 function showQuote(i){
@@ -918,8 +1011,9 @@ document.addEventListener("click", async e=>{
 });
 
 /* ---------------- routing ---------------- */
-const PAGES = ["home","music","watch","live","press","about","contact"];
+const PAGES = ["home","music","watch","gallery","live","press","about","contact"];
 function route(){
+  if (!$("#lightbox").hidden) closeLightbox();
   const h = location.hash.replace("#","");
   const page = PAGES.includes(h) ? h : "home";
   document.body.classList.toggle("is-home", page==="home");
