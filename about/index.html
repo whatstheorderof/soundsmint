@@ -322,8 +322,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .duo img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1) contrast(1.35) brightness(1.05);mix-blend-mode:multiply;transition:filter .5s, mix-blend-mode .5s}
 .duo:hover img,.duo.colour img{filter:none;mix-blend-mode:normal}
 .duo{cursor:pointer}
-@media (hover:none){.duo .hover-cap{display:none}.duo .tap-cap{display:block}}
 .duo .tap-cap{display:none}
+@media (hover:none){.duo .hover-cap{display:none}.duo .tap-cap{display:inline}}
 .duo figcaption{position:absolute;right:10px;top:10px;background:var(--ink);color:var(--paper);padding:4px 8px}
 .stamp{position:absolute;left:-18px;bottom:22px;transform:rotate(-4deg);background:var(--ink);color:var(--mint);padding:10px 14px 8px;font-family:var(--display);font-size:30px;line-height:.9;text-transform:uppercase;text-decoration:none;box-shadow:4px 4px 0 var(--mint-deep)}
 .stamp small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--paper)}
@@ -544,7 +544,14 @@ footer img{width:220px;max-width:100%;height:auto;opacity:.9}
 .dock .frame.apple iframe{height:175px}
 .dock .outs{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em}
 .dock .outs a{color:var(--mint)}
-.toggle-frame{font-family:var(--mono);font-size:11px;text-transform:uppercase;color:var(--muted)}
+.icon-btn{width:44px;height:44px;display:grid;place-items:center;border:2px solid var(--line);color:var(--paper);font-size:18px;line-height:1;flex:none}
+.icon-btn:hover{border-color:var(--mint);color:var(--mint)}
+.dock[data-state="closed"] #dock-min,.dock[data-state="closed"] #dock-close{display:none}
+.dock[data-state="open"] #dock-play{display:none}
+.dock[data-state="min"] #dock-play{display:none}
+.dock[data-state="min"] #dock-min{transform:rotate(180deg)}
+.dock .frame{padding-bottom:10px}
+.dock .outs .seg{display:none}
 
 @media (max-width: 960px){
   .mast-inner{grid-template-columns:1fr}
@@ -569,6 +576,11 @@ footer img{width:220px;max-width:100%;height:auto;opacity:.9}
   .timeline dt{font-size:30px}
   .stamp{left:8px}
   .dock .ctrl .seg{display:none}
+  .dock .outs .seg{display:inline-flex}
+  .dock .frame iframe{height:80px;border-radius:10px}
+  .dock .frame.apple iframe{height:150px}
+  .dock .ctrl{flex-wrap:nowrap;gap:6px}
+  .dock .now b{font-size:22px}
   .dock-inner{grid-template-columns:48px minmax(0,1fr) auto}
   .dock .mini{width:48px;height:48px}
   .vnotes{grid-template-columns:1fr}
@@ -804,8 +816,7 @@ footer img{width:220px;max-width:100%;height:auto;opacity:.9}
   </div>
 </footer>
 
-<aside class="dock" id="dock" aria-label="Player">
-  <div class="frame" id="dock-frame" hidden></div>
+<aside class="dock" id="dock" aria-label="Player" data-state="closed">
   <div class="dock-inner">
     <div class="cover mini" id="dock-cover"></div>
     <div class="now"><b id="dock-title">Milk It</b><span class="mono" id="dock-sub">The mixtape · out now</span></div>
@@ -814,9 +825,12 @@ footer img{width:220px;max-width:100%;height:auto;opacity:.9}
         <button data-svc="spotify" aria-pressed="true">Spotify</button>
         <button data-svc="apple" aria-pressed="false">Apple</button>
       </div>
-      <button class="btn" id="dock-play" aria-label="Play">▶︎ Play</button>
+      <button class="btn" id="dock-play">▶︎ Play</button>
+      <button class="icon-btn" id="dock-min" aria-label="Minimise player" title="Minimise">▾</button>
+      <button class="icon-btn" id="dock-close" aria-label="Close player" title="Close">✕</button>
     </div>
   </div>
+  <div class="frame" id="dock-frame" hidden></div>
 </aside>
 
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" hidden>
@@ -1061,7 +1075,16 @@ try { svc = localStorage.getItem("sm-svc") || "spotify"; } catch(e){}
 function setSvc(s){
   svc = s; try{localStorage.setItem("sm-svc",s)}catch(e){}
   document.querySelectorAll("[data-svc]").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.svc===s)));
-  if (!$("#dock-frame").hidden) play(current);
+  if ($("#dock").dataset.state!=="closed") play(current);
+}
+function dockState(st){
+  const d = $("#dock"), f = $("#dock-frame");
+  d.dataset.state = st;
+  f.hidden = st!=="open";
+  if (st==="closed") f.innerHTML = "";   /* removing the embed stops the audio */
+  $("#dock-min").setAttribute("aria-label", st==="min" ? "Show player" : "Minimise player");
+  $("#dock-min").title = st==="min" ? "Show player" : "Minimise";
+  if (st==="closed") document.querySelectorAll(".rel").forEach(el=>el.classList.remove("playing"));
 }
 function play(id){
   const r = byId(id); if(!r) return;
@@ -1071,26 +1094,26 @@ function play(id){
   $("#dock-sub").textContent = `${r.kind} · ${r.date}`;
   document.querySelectorAll(".rel").forEach(el=>el.classList.toggle("playing", el.dataset.id===id));
   const f = $("#dock-frame");
-  const outs = `<div class="outs"><a href="${spUrl(r)}" target="_blank" rel="noopener">Spotify ↗</a><a href="${appleUrl(r)}" target="_blank" rel="noopener">Apple Music ↗</a>${r.video?`<a href="https://www.youtube.com/watch?v=${r.video}" target="_blank" rel="noopener">YouTube ↗</a>`:""}<button class="toggle-frame" id="hide-frame">Hide player</button></div>`;
+  const seg = `<div class="seg" role="group" aria-label="Streaming service"><button data-svc="spotify" aria-pressed="${svc==="spotify"}">Spotify</button><button data-svc="apple" aria-pressed="${svc==="apple"}">Apple</button></div>`;
+  const outs = `<div class="outs">${seg}<a href="${spUrl(r)}" target="_blank" rel="noopener">Spotify ↗</a><a href="${appleUrl(r)}" target="_blank" rel="noopener">Apple Music ↗</a>${r.video?`<a href="https://www.youtube.com/watch?v=${r.video}" target="_blank" rel="noopener">YouTube ↗</a>`:""}</div>`;
   if (EMBEDS){
     let src, cls="";
     if (svc==="apple" && r.apple){ src=`https://embed.music.apple.com/gb/album/${r.apple[0]}/${r.apple[1]}`; cls="apple"; }
     else if (r.sp){ src=`https://open.spotify.com/embed/${r.sp[0]}/${r.sp[1]}?utm_source=generator&theme=0`; }
-    else if (r.apple && svc!=="spotify"){ src=`https://embed.music.apple.com/gb/album/${r.apple[0]}/${r.apple[1]}`; cls="apple"; }
-    else if (r.apple && svc==="spotify"){ src=`https://open.spotify.com/embed/artist/${ARTIST_SP}?utm_source=generator&theme=0`; }
     else { src=`https://open.spotify.com/embed/artist/${ARTIST_SP}?utm_source=generator&theme=0`; }
     f.className = "frame " + cls;
-    f.innerHTML = `<iframe title="${esc(r.title)} player" src="${src}" allow="autoplay *; encrypted-media *; clipboard-write; fullscreen; picture-in-picture" loading="lazy"></iframe>${outs}`;
+    f.innerHTML = `<iframe title="${esc(r.title)} player" src="${src}" allow="autoplay *; encrypted-media *; clipboard-write; fullscreen; picture-in-picture"></iframe>${outs}`;
   } else {
     f.className = "frame";
     f.innerHTML = `<p class="mono" style="color:var(--muted);margin:10px 0 6px">Preview copy: the in-page player switches on when the site is live on its own domain. Listen now on:</p>${outs}`;
   }
-  f.hidden = false;
-  $("#dock-play").textContent = "▶︎ Playing";
-  $("#hide-frame").addEventListener("click", ()=>{ f.hidden = true; $("#dock-play").textContent = "▶︎ Play"; });
+  dockState("open");
 }
-$("#dock-play").addEventListener("click", ()=> $("#dock-frame").hidden ? play(current) : ($("#dock-frame").hidden=true, $("#dock-play").textContent="▶︎ Play"));
-document.querySelectorAll("[data-svc]").forEach(b=>b.addEventListener("click",()=>setSvc(b.dataset.svc)));
+$("#dock-play").addEventListener("click", ()=>play(current));
+$("#dock-min").addEventListener("click", ()=>dockState($("#dock").dataset.state==="min" ? "open" : "min"));
+$("#dock-close").addEventListener("click", ()=>dockState("closed"));
+document.addEventListener("keydown", e=>{ if (e.key==="Escape" && $("#lightbox").hidden && $("#dock").dataset.state==="open") dockState("min"); });
+document.addEventListener("click", e=>{ const b = e.target.closest("[data-svc]"); if (b) setSvc(b.dataset.svc); });
 
 /* ---------------- RENDER: music ---------------- */
 function renderReleases(filter="all"){
@@ -1108,7 +1131,7 @@ function renderReleases(filter="all"){
     const go = ()=>play(r.id);
     c.addEventListener("click", go);
     c.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); go(); }});
-    if (r.id===current && !$("#dock-frame").hidden) el.classList.add("playing");
+    if (r.id===current && $("#dock").dataset.state!=="closed") el.classList.add("playing");
     g.appendChild(el);
   });
 }
