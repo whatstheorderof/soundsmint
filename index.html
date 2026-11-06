@@ -135,7 +135,7 @@ body:not(.is-home) .nav a .k{display:none}
 .rel.playing h3{color:var(--mint)}
 
 /* watch */
-.screen{background:#000;aspect-ratio:16/9;max-width:100%;position:relative;overflow:hidden}
+.screen{background:#000;aspect-ratio:16/9;max-height:72vh;margin-inline:auto;width:100%;max-width:100%;position:relative;overflow:hidden}
 .screen iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .screen .poster{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:24px;background:
   linear-gradient(transparent 40%,rgba(0,0,0,.85)),
@@ -143,14 +143,17 @@ body:not(.is-home) .nav a .k{display:none}
 .screen .poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
 .screen .poster > *:not(img){position:relative;z-index:1}
 .screen .poster h2{font-size:clamp(44px,7vw,96px);color:var(--paper)}
-.watch-layout{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:20px}
-.vlist{display:flex;flex-direction:column;gap:10px}
-.vitem{display:grid;grid-template-columns:120px minmax(0,1fr);gap:12px;align-items:center;text-align:left;padding:8px;background:var(--panel);border:2px solid transparent}
+.watch-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:28px}
+.vlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+.vitem{display:flex;flex-direction:column;gap:10px;text-align:left;padding:0 0 12px;background:var(--panel);border:2px solid transparent;min-width:0}
+.vitem > span:last-child{padding:0 12px;display:block;min-width:0}
+.vitem .thumb::after{content:"▶";position:absolute;right:8px;bottom:8px;width:34px;height:34px;border-radius:50%;background:var(--ink);color:var(--mint);display:grid;place-items:center;font-size:13px;opacity:.9}
+.vcount{color:var(--muted)}
 .vitem[aria-pressed="true"]{border-color:var(--mint)}
 .vitem:hover{border-color:var(--line)}
 .thumb{aspect-ratio:16/9;background:conic-gradient(var(--ink) 25%,var(--mint-deep) 0 50%,var(--ink) 0 75%,var(--mint-deep) 0) 0 0/16px 16px;position:relative;overflow:hidden}
 .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.vitem strong{font-family:var(--display);font-weight:400;font-size:26px;text-transform:uppercase;line-height:1;display:block}
+.vitem strong{font-family:var(--display);font-weight:400;font-size:26px;overflow-wrap:anywhere;text-transform:uppercase;line-height:1;display:block}
 .vitem span{color:var(--muted);font-size:13px}
 .vnotes{margin-top:16px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:start}
 .vnotes p{margin:0;color:var(--muted);max-width:62ch}
@@ -364,15 +367,19 @@ footer img{width:220px;max-width:100%;height:auto;opacity:.9}
   <!-- WATCH -->
   <section class="page wrap" id="p-watch" data-page="watch" hidden>
     <div class="page-head">
-      <div><p class="mono eyebrow">Official videos</p><h1>Watch</h1></div>
-      <p>Every video is shot in and around London (bar one, made in Belgium). Pick one to play.</p>
+      <div><p class="mono eyebrow">Every video on the channel</p><h1>Watch</h1></div>
+      <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start;max-width:46ch"><p>Music videos, live sets and visualisers, straight from the sounds mint YouTube channel. Pick one to play.</p>
+        <div class="row"><button class="btn" id="play-all">▶ Play all</button><a class="btn ghost" href="https://www.youtube.com/@sounds_mint?sub_confirmation=1" target="_blank" rel="noopener">Subscribe</a></div></div>
     </div>
     <div class="watch-layout">
       <div>
         <div class="screen" id="screen"></div>
         <div class="vnotes"><p id="vnote"></p><a class="btn ghost" id="vlink" target="_blank" rel="noopener" href="#">On YouTube</a></div>
       </div>
-      <div class="vlist" id="vlist" role="group" aria-label="Videos"></div>
+      <div>
+        <p class="mono vcount" id="vcount" style="margin:0 0 12px"></p>
+        <div class="vlist" id="vlist" role="group" aria-label="Videos"></div>
+      </div>
     </div>
   </section>
 
@@ -546,22 +553,44 @@ const RELEASES = [
   { id:"fall-back", art:"Music122/v4/a7/2b/ee/a72beef5-6f03-c78b-1e18-eeb252f6fa26/5056495124467_1.jpg", title:"Fall Back", kind:"Single", group:"single", date:"22 May 2022", label:"",
     apple:["fall-back-single","1620946597"], sp:null, note:"The first sounds mint release.", c1:"#111413", c2:"#e9ece7" }
 ];
-const VIDEOS = [
-  { id:"3t9VLhn3394", title:"Where’s Wally?", year:"2025", rel:"one-day",
-    note:"Shot around Piccadilly Circus, the most CCTV-dense spot in the world. Rob, dressed as Wally, took instructions from the band on a rooftop through a single hidden earpiece. The band call it their most fun shoot yet." },
-  { id:"UqRnWqLDp40", title:"Tin", year:"2025", rel:"tin",
-    note:"Cold and monochrome, from empty pubs to Victoria Park and Moth Club in East London. A song about numbing out to the people in charge." },
-  { id:"DfMGN1KwQFM", title:"Zombies", year:"2025", rel:"zombies",
-    note:"Kelvin wanted the song sung like a national anthem before a match, so the video is all grassroots football on a cold London day." },
-  { id:"DkAYe07M-F8", title:"Incel Saviour (feat. STONE)", year:"2024", rel:"incel",
-    note:"Shot in Belgium. Directed by sounds mint, Louis Caldwell and Charlie Barclay Harris." },
-  { id:null, title:"Gillett Square", year:"2026", rel:"milk-it", url:"https://www.youtube.com/@sounds_mint/search?query=Gillett%20Square",
-    note:"Video for the Milk It track, released with the mixtape on 18 March 2026." },
-  { id:null, title:"Herpes", year:"2025", rel:"herpes", url:"https://music.apple.com/gb/music-video/herpes/1850012254",
-    note:"Official video for the 2025 single." },
-  { id:"__all", title:"Every upload", year:"Channel", rel:null, url:"https://www.youtube.com/@sounds_mint/videos",
-    note:"The full sounds mint YouTube channel as a playlist, newest first." }
+/* Fallback list. On the live site /api/videos replaces this with every upload on the channel. */
+const CHANNEL_ID = "UCh_z_mVjnIPXXibchl09-Sg";
+const UPLOADS = "UU" + CHANNEL_ID.slice(2);
+let VIDEOS = [
+  { id:"3t9VLhn3394", title:"Where’s Wally?", year:"2025", kind:"Music video" },
+  { id:"UqRnWqLDp40", title:"Tin", year:"2025", kind:"Music video" },
+  { id:"DfMGN1KwQFM", title:"Zombies", year:"2025", kind:"Music video" },
+  { id:"DkAYe07M-F8", title:"Incel Saviour (feat. STONE)", year:"2024", kind:"Music video" },
+  { id:"YQmpMTJ2Geg", title:"Here’s The Tea", year:"2024", kind:"Video" },
+  { id:"qXx3ICXrtds", title:"Pugland", year:"2023", kind:"Video" },
+  { id:"1CKLLP6B5WY", title:"Live at Sebright Arms, 26/01/23", year:"2023", kind:"Live" },
+  { id:"tERl6mYVHsc", title:"Fall Back", year:"2022", kind:"Video" }
 ];
+/* Notes shown under the player, matched by video id or by song title */
+const VNOTES = {
+  "3t9VLhn3394":"Shot around Piccadilly Circus, the most CCTV-dense spot in the world. Rob, dressed as Wally, took instructions from the band on a rooftop through a single hidden earpiece. The band call it their most fun shoot yet.",
+  "UqRnWqLDp40":"Cold and monochrome, from empty pubs to Victoria Park and Moth Club in East London. A song about numbing out to the people in charge.",
+  "DfMGN1KwQFM":"Kelvin wanted the song sung like a national anthem before a match, so the video is all grassroots football on a cold London day.",
+  "DkAYe07M-F8":"Shot in Belgium. Directed by sounds mint, Louis Caldwell and Charlie Barclay Harris.",
+  "1CKLLP6B5WY":"Live at the Sebright Arms in January 2023, during the band’s three-month residency there.",
+  "tERl6mYVHsc":"The first sounds mint single, from May 2022."
+};
+const TITLE_NOTES = { "gillett square":"From Milk It, the mixtape, released 18 March 2026.", "herpes":"The 2025 single.", "pugland":"Produced by Amin El Makkawi and Tommy Wallwork." };
+const normTitle = t => t.toLowerCase().replace(/[’']/g,"'").replace(/\s+/g," ").trim();
+/* "sounds mint - Tin (Official Music Video)" -> { title:"Tin", kind:"Music video" } */
+function cleanTitle(raw){
+  let t = raw.replace(/^\s*sounds\s*mint\s*[-–—:|]\s*/i,"");
+  let kind = /official\s+(music\s+)?video/i.test(t) ? "Music video" : /visuali[sz]er/i.test(t) ? "Visualiser" : /lyric/i.test(t) ? "Lyric video" : /live|session|@/i.test(raw) ? "Live" : /#shorts|short/i.test(raw) ? "Short" : "Video";
+  t = t.replace(/\s*[\(\[](official[^\)\]]*|visuali[sz]er|lyric[^\)\]]*|audio)[\)\]]\s*/ig," ").replace(/\s{2,}/g," ").trim();
+  t = t.replace(/^sounds mint\s*@\s*/i,"Live at ");
+  return { title: t || raw, kind };
+}
+function noteFor(v){
+  if (VNOTES[v.id]) return VNOTES[v.id];
+  const n = normTitle(v.title);
+  for (const k in TITLE_NOTES) if (n.includes(k)) return TITLE_NOTES[k];
+  return v.kind==="Live" ? "Live footage from the sounds mint channel." : "From the sounds mint YouTube channel.";
+}
 const PRESS = [
   { outlet:"Metal Magazine", date:"23 Jul 2025", by:"David Alarcón", url:"https://metalmagazine.eu/en/post/sounds-mint",
     hed:"Sounds Mint: Chaos Finds Purpose",
@@ -724,34 +753,54 @@ document.querySelectorAll("[data-f]").forEach(b=>b.addEventListener("click",()=>
 }));
 
 /* ---------------- RENDER: watch ---------------- */
-let currentVideo = VIDEOS[0];
+let currentVideo = null;
+const ytThumb = (id,q) => `https://i.ytimg.com/vi/${id}/${q}.jpg`;
 function showVideo(v, autoplay){
   currentVideo = v;
-  document.querySelectorAll(".vitem").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.v===String(VIDEOS.indexOf(v)))));
+  document.querySelectorAll(".vitem").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.id===v.id)));
   const s = $("#screen");
-  const ext = v.id && v.id!=="__all" ? `https://www.youtube.com/watch?v=${v.id}` : v.url;
-  $("#vnote").textContent = v.note;
+  const ext = v.id==="__all" ? "https://www.youtube.com/@sounds_mint/videos" : `https://www.youtube.com/watch?v=${v.id}`;
+  $("#vnote").textContent = v.id==="__all" ? "Every upload on the channel, newest first." : noteFor(v);
   $("#vlink").href = ext;
-  $("#vlink").textContent = v.url && v.url.includes("apple") ? "On Apple Music" : "On YouTube";
-  if (EMBEDS && autoplay && v.id){
-    const src = v.id==="__all" ? "https://www.youtube-nocookie.com/embed/videoseries?list=UUh_z_mVjnIPXXibchl09-Sg" : `https://www.youtube-nocookie.com/embed/${v.id}?autoplay=1&rel=0`;
+  if (EMBEDS && autoplay){
+    const src = v.id==="__all" ? `https://www.youtube-nocookie.com/embed/videoseries?list=${UPLOADS}&autoplay=1` : `https://www.youtube-nocookie.com/embed/${v.id}?autoplay=1&rel=0`;
     s.innerHTML = `<iframe title="${esc(v.title)}" src="${src}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
     return;
   }
-  const thumb = (EMBEDS && v.id && v.id!=="__all") ? `<img src="https://i.ytimg.com/vi/${v.id}/maxresdefault.jpg" alt="" onerror="this.remove()">` : "";
-  const canEmbed = EMBEDS && v.id;
-  s.innerHTML = `<div class="poster">${thumb}<p class="mono eyebrow">${esc(v.year)} · official video</p><h2>${esc(v.title)}</h2>
-    <div class="row" style="margin-top:14px">${canEmbed?`<button class="btn" id="vplay">▶ Play</button>`:`<a class="btn" href="${ext}" target="_blank" rel="noopener">▶ Watch ${v.url && v.url.includes("apple")?"on Apple Music":"on YouTube"}</a>`}</div></div>`;
+  const thumb = v.id!=="__all" ? `<img src="${ytThumb(v.id,"maxresdefault")}" alt="" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='${ytThumb(v.id,"hqdefault")}'}else{this.remove()}">` : "";
+  s.innerHTML = `<div class="poster">${thumb}<p class="mono eyebrow">${esc(v.year||"")}${v.year?" · ":""}${esc(v.kind||"Video")}</p><h2>${esc(v.title)}</h2>
+    <div class="row" style="margin-top:14px">${EMBEDS?`<button class="btn" id="vplay">▶ Play</button>`:`<a class="btn" href="${ext}" target="_blank" rel="noopener">▶ Watch on YouTube</a>`}</div></div>`;
   const pb = $("#vplay"); if (pb) pb.addEventListener("click", ()=>showVideo(v,true));
 }
 function renderVideos(){
   const l = $("#vlist");
-  l.innerHTML = VIDEOS.map((v,i)=>{
-    const th = (EMBEDS && v.id && v.id!=="__all") ? `<img src="https://i.ytimg.com/vi/${v.id}/mqdefault.jpg" alt="" loading="lazy" onerror="this.remove()">` : "";
-    return `<button class="vitem" data-v="${i}" aria-pressed="false"><span class="thumb">${th}</span><span><strong>${esc(v.title)}</strong><span class="mono">${esc(v.year)}</span></span></button>`;
-  }).join("");
-  l.querySelectorAll(".vitem").forEach(b=>b.addEventListener("click",()=>showVideo(VIDEOS[+b.dataset.v], true)));
-  showVideo(VIDEOS[0], false);
+  l.innerHTML = VIDEOS.map(v=>`<button class="vitem" data-id="${esc(v.id)}" aria-pressed="false" title="${esc(v.raw||v.title)}">
+      <span class="thumb"><img src="${ytThumb(v.id,"hqdefault")}" alt="" loading="lazy" decoding="async" onerror="this.remove()"></span>
+      <span><strong>${esc(v.title)}</strong><span class="mono">${esc(v.kind||"Video")}${v.year?" · "+esc(v.year):""}</span></span></button>`).join("");
+  l.querySelectorAll(".vitem").forEach(b=>b.addEventListener("click",()=>{ showVideo(VIDEOS.find(v=>v.id===b.dataset.id), true); $("#screen").scrollIntoView({behavior:"smooth",block:"start"}); }));
+  $("#vcount").textContent = `${VIDEOS.length} video${VIDEOS.length===1?"":"s"}`;
+  if (!currentVideo || !VIDEOS.some(v=>v.id===currentVideo.id)) showVideo(VIDEOS[0], false);
+  else document.querySelectorAll(".vitem").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.id===currentVideo.id)));
+}
+$("#play-all").addEventListener("click", ()=>{
+  if (EMBEDS){ showVideo({id:"__all", title:"Every upload", kind:"Playlist"}, true); $("#screen").scrollIntoView({behavior:"smooth",block:"start"}); }
+});
+if (!EMBEDS){ const pa=$("#play-all"); const a=document.createElement("a"); a.className=pa.className; a.textContent="▶ Play all on YouTube"; a.href="https://www.youtube.com/@sounds_mint/videos"; a.target="_blank"; a.rel="noopener"; pa.replaceWith(a); }
+/* Pull every upload from the channel (Vercel function at /api/videos); keep the fallback list if it fails */
+async function loadChannel(){
+  if (!/^https?:$/.test(location.protocol)) return;
+  try {
+    const r = await fetch("/api/videos", {headers:{accept:"application/json"}});
+    if (!r.ok) return;
+    const data = await r.json();
+    if (!Array.isArray(data.videos) || !data.videos.length) return;
+    VIDEOS = data.videos.map(x=>{
+      const c = cleanTitle(x.title||"");
+      const year = x.published ? String(new Date(x.published).getFullYear()) : (x.ago||"");
+      return { id:x.id, title:c.title, raw:x.title, kind:c.kind, year };
+    });
+    renderVideos();
+  } catch(e){ /* stay on the fallback list */ }
 }
 
 /* ---------------- RENDER: press, about, live ---------------- */
@@ -837,6 +886,7 @@ paintCover(document.querySelector('[data-cover="milk-it"]'), byId("milk-it"));
 paintCover($("#dock-cover"), byId("milk-it"), {size:120});
 document.querySelectorAll("[data-svc]").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.svc===svc)));
 renderReleases(); renderVideos(); renderPress(); renderAbout(); renderLive();
+loadChannel();
 route();
 </script>
 

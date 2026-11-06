@@ -5,6 +5,9 @@ Static single-page site for London post-punk four-piece **sounds mint**. Replace
 - `index.html` — the whole site (pages: home, music, watch, live, press, about, contact via `#hash` routes)
 - `assets/` — logo (ink + white) and band photo
 
+## Watch page
+`api/videos.js` is a Vercel function that reads the band's YouTube channel (videos, shorts, live tabs + RSS) and returns every upload as JSON. The Watch page loads it, so new uploads appear automatically within an hour. If it ever fails, the page falls back to the built-in `VIDEOS` list in `index.html`.
+
 ## Deploy
 Vercel, imported from this repo. No build step: Framework preset **Other**, output directory `.`
 
